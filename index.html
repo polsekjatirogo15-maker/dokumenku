@@ -97,7 +97,7 @@
       <div class="side-foot"><strong>POLSEK JATIROGO</strong><br>POLRESTA TUBAN<br>Arsip terpusat · Google Drive<br><span style="font-size:10px;color:#94a3b8">Pengembang: masluki.id</span></div>
     </aside>
     <main>
-      <header class="topbar"><div><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Ringkasan dokumentasi kegiatan</p></div><div class="user-pill"><div class="avatar" id="avatar">P</div><span id="userLabel">Petugas</span><button class="btn ghost" id="logoutBtn">Keluar</button></div></header>
+      <header class="topbar"><div><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Ringkasan dokumentasi kegiatan</p></div><div class="user-pill"><div class="avatar" id="avatar">P</div><span id="userLabel">Petugas</span><span style="font-size:11px;color:#64748b">Akses tanpa login</span></div></header>
       <div class="content">
         <section id="page-dashboard">
           <div class="hero-dashboard">
@@ -188,14 +188,14 @@
     else { button.textContent = button.dataset.oldText || button.textContent; button.disabled = false; }
   }
   async function boot() {
-    try {
-      const info = await callServer('getAppInfo');
-      if (!info.configured) $('setupHint').classList.remove('hidden');
-    } catch(e) {}
-    if (token) {
-      try { await loadDashboard(); return; } catch(e) { token=''; sessionStorage.removeItem('fotoku_token'); }
-    }
-    $('loginScreen').classList.remove('hidden'); $('appScreen').classList.add('hidden');
+    // Mode tanpa login: langsung buka dashboard. Akses data menjadi publik.
+    $('loginScreen').classList.add('hidden');
+    $('appScreen').classList.remove('hidden');
+    $('usersNav').classList.add('hidden');
+    $('userLabel').textContent = 'Akses Umum';
+    $('welcomeName').textContent = 'Petugas';
+    try { await loadDashboard(); }
+    catch (e) { toast('Gagal memuat data: ' + (e.message || 'Periksa backend Apps Script'), true); }
   }
   $('loginForm').addEventListener('submit', async e => {
     e.preventDefault();
@@ -214,7 +214,7 @@
     $('loginScreen').classList.add('hidden'); $('appScreen').classList.remove('hidden');
     $('userLabel').textContent=currentUser.username; $('welcomeName').textContent=currentUser.username;
     $('avatar').textContent=currentUser.username.slice(0,1).toUpperCase();
-    $('usersNav').classList.toggle('hidden',currentUser.role!=='admin');
+    $('usersNav').classList.add('hidden');
     await loadDashboard();
   }
   async function loadDashboard() {
@@ -223,7 +223,7 @@
     $('loginScreen').classList.add('hidden'); $('appScreen').classList.remove('hidden');
     $('userLabel').textContent=currentUser.username; $('welcomeName').textContent=currentUser.username;
     $('avatar').textContent=currentUser.username.slice(0,1).toUpperCase();
-    $('usersNav').classList.toggle('hidden',currentUser.role!=='admin');
+    $('usersNav').classList.add('hidden');
     $('statTotal').textContent=d.total; $('statPhotos').textContent=d.photos; $('statVideos').textContent=d.videos; $('statReports').textContent=d.reports;
     renderTable($('recentTable'),d.recent,false);
   }
@@ -239,11 +239,7 @@
     window.scrollTo({top:0,behavior:'auto'});
   }
   document.querySelectorAll('.nav button[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
-  $('logoutBtn').addEventListener('click',async()=>{
-    try{await callServer('logout',token)}catch(e){}
-    token='';currentUser=null;sessionStorage.removeItem('fotoku_token');
-    $('appScreen').classList.add('hidden');$('loginScreen').classList.remove('hidden');$('loginUser').value='';$('loginPass').value='';
-  });
+  // Tombol logout tidak digunakan pada mode tanpa login.
   $('filterBtn').addEventListener('click',loadArchive);
   $('searchQuery').addEventListener('keydown',e=>{if(e.key==='Enter')loadArchive()});
   async function loadArchive(){
