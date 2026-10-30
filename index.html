@@ -141,7 +141,7 @@
                 <div class="field"><label for="docTitle">Judul dokumentasi *</label><input id="docTitle" required maxlength="150" placeholder="Contoh: Dokumentasi kegiatan apel pagi"></div>
                 <div class="field"><label for="docCategory">Kategori *</label><select id="docCategory" required><option>Kegiatan</option><option>Foto</option><option>Video</option><option>Laporan</option><option>Lainnya</option></select></div>
                 <div class="field"><label for="eventDate">Tanggal kegiatan</label><input id="eventDate" type="date"></div>
-                <div class="field"><label for="docFile">Pilih file * (maksimal 8 MB)</label><input id="docFile" type="file" required accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip"></div>
+                <div class="field"><label for="docFile">Pilih file * (maksimal 3 MB)</label><input id="docFile" type="file" required accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip"></div>
                 <div class="field full"><label for="docDescription">Keterangan</label><textarea id="docDescription" maxlength="1000" placeholder="Lokasi, nama kegiatan, petugas, atau catatan lainnya..."></textarea></div>
                 <div class="field full"><div class="upload-box"><div style="font-size:30px">☁️</div><strong>File akan disimpan ke Google Drive</strong><p id="fileInfo" style="color:#64748b;margin-bottom:0">Pilih file dari komputer Anda.</p></div></div>
               </div>
@@ -166,8 +166,16 @@
   const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const formatSize = n => n < 1024 ? n+' B' : n < 1048576 ? (n/1024).toFixed(1)+' KB' : (n/1048576).toFixed(2)+' MB';
   function callServer(fn, ...args) {
-    return new Promise((resolve,reject) => {
-      google.script.run.withSuccessHandler(resolve).withFailureHandler(err => reject(new Error(err && err.message ? err.message : String(err))))[fn](...args);
+    return fetch('/api/gas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fn, args })
+    }).then(async response => {
+      let result;
+      try { result = await response.json(); } catch (_) { throw new Error('Respons backend tidak valid. Periksa URL Web App Apps Script di Vercel.'); }
+      if (!response.ok) throw new Error(result.error || 'Permintaan ke server gagal.');
+      if (!result.ok) throw new Error(result.error || 'Permintaan tidak berhasil.');
+      return result.data;
     });
   }
   function toast(message, error=false) {
@@ -278,7 +286,7 @@
   $('uploadForm').addEventListener('submit',async e=>{
     e.preventDefault();
     const file=$('docFile').files[0];if(!file){toast('Pilih file terlebih dahulu.',true);return}
-    if(file.size>8*1024*1024){toast('Ukuran file maksimal 8 MB.',true);return}
+    if(file.size>3*1024*1024){toast('Ukuran file maksimal 3 MB saat memakai Vercel.',true);return}
     const btn=$('uploadBtn');setBusy(btn,true,'Mengunggah...');
     try{
       const base64=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]||'');reader.onerror=()=>reject(new Error('File tidak dapat dibaca.'));reader.readAsDataURL(file)});

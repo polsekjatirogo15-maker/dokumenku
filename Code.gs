@@ -10,13 +10,14 @@
  * 5. Deploy > New deployment > Web app. Execute as: Me.
  *    Who has access: pilih sesuai kebijakan organisasi (mis. akun Google organisasi).
  *
- * Batas upload/download di aplikasi: 8 MB per file untuk menghindari batas payload Apps Script.
+ * Mode Vercel: komunikasi frontend melalui /api/gas (proxy Vercel) ke URL Web App /exec ini.
+ * Batas upload/download di aplikasi: 3 MB per file agar aman melewati batas payload Vercel.
  */
 
 const APP_NAME = 'FOTOKU';
-const INITIAL_ADMIN_USERNAME = 'luki';
-const INITIAL_ADMIN_PASSWORD = 'luki';
-const MAX_FILE_BYTES = 8 * 1024 * 1024;
+const INITIAL_ADMIN_USERNAME = 'GANTI_DENGAN_USERNAME_ADMIN';
+const INITIAL_ADMIN_PASSWORD = 'GANTI_DENGAN_PASSWORD_KUAT_MINIMAL_12_KARAKTER';
+const MAX_FILE_BYTES = 3 * 1024 * 1024; // Vercel serverless request limit; keep base64 payload safely below 4.5 MB
 const SESSION_SECONDS = 21600; // 6 jam
 const PROP_FOLDER_ID = 'FOTOKU_FOLDER_ID';
 // Folder Drive tujuan yang diberikan pengguna. Akun pemilik script harus punya akses.
@@ -27,6 +28,44 @@ function doGet() {
   return HtmlService.createHtmlOutputFromFile('index')
     .setTitle(APP_NAME + ' — Manajemen Dokumentasi')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+
+/**
+ * API untuk frontend yang di-host di Vercel.
+ * Jangan menghapus doGet jika masih ingin membuka UI Apps Script secara langsung.
+ * Vercel mengirim POST JSON: {"fn":"login","args":["username","password"]}
+ */
+function doPost(e) {
+  try {
+    const body = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    const fn = String(body.fn || '');
+    const args = Array.isArray(body.args) ? body.args : [];
+    const handlers = {
+      getAppInfo: function () { return getAppInfo(); },
+      login: function () { return login.apply(null, args); },
+      logout: function () { return logout.apply(null, args); },
+      getDashboard: function () { return getDashboard.apply(null, args); },
+      listDocuments: function () { return listDocuments.apply(null, args); },
+      uploadDocument: function () { return uploadDocument.apply(null, args); },
+      downloadDocument: function () { return downloadDocument.apply(null, args); },
+      deleteDocument: function () { return deleteDocument.apply(null, args); },
+      addUser: function () { return addUser.apply(null, args); },
+      listUsers: function () { return listUsers.apply(null, args); },
+      setUserActive: function () { return setUserActive.apply(null, args); }
+    };
+    if (!Object.prototype.hasOwnProperty.call(handlers, fn)) {
+      throw new Error('Aksi API tidak diizinkan.');
+    }
+    const result = handlers[fn]();
+    return ContentService.createTextOutput(JSON.stringify({ ok: true, data: result }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({
+      ok: false,
+      error: String(err && err.message ? err.message : err)
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
 }
 
 /**
