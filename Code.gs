@@ -15,8 +15,8 @@
  */
 
 const APP_NAME = 'FOTOKU';
-const INITIAL_ADMIN_USERNAME = 'GANTI_DENGAN_USERNAME_ADMIN';
-const INITIAL_ADMIN_PASSWORD = 'GANTI_DENGAN_PASSWORD_KUAT_MINIMAL_12_KARAKTER';
+const INITIAL_ADMIN_USERNAME = 'admin';
+const INITIAL_ADMIN_PASSWORD = 'admin';
 const MAX_FILE_BYTES = 3 * 1024 * 1024; // Vercel serverless request limit; keep base64 payload safely below 4.5 MB
 const SESSION_SECONDS = 21600; // 6 jam
 const PROP_FOLDER_ID = 'FOTOKU_FOLDER_ID';
