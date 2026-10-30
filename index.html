@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    :root{--navy:#172554;--blue:#2563eb;--bg:#f4f7fb;--text:#172033;--muted:#68758a;--line:#e5eaf2;--white:#fff;--red:#dc2626}
+    :root{--navy:#101d3b;--blue:#1d4ed8;--bg:#f3f6fb;--text:#172033;--muted:#68758a;--line:#e5eaf2;--white:#fff;--red:#c62828;--gold:#f2c66d}
     *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);font-size:14px}
     button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;font-weight:650}
     .btn{background:var(--blue);color:#fff}.btn.secondary{background:#eaf0ff;color:#1d4ed8}.btn.ghost{background:#f1f5f9;color:#334155}.btn.danger{background:#fee2e2;color:#b91c1c}
@@ -39,6 +39,31 @@
     .loading{opacity:.65;pointer-events:none}.toast{position:fixed;right:20px;bottom:20px;max-width:360px;padding:14px 18px;border-radius:12px;background:#0f172a;color:#fff;box-shadow:0 8px 30px #0002;z-index:20}
     .modal-backdrop{position:fixed;inset:0;background:#0f172a88;display:grid;place-items:center;padding:18px;z-index:10}.modal{background:#fff;border-radius:18px;padding:22px;width:min(650px,100%);max-height:90vh;overflow:auto}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal-head h3{margin:0}.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
     .user-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);gap:12px}
+
+    /* Tampilan resmi FOTOKU Polsek Jatirogo — ringan tanpa animasi berat */
+    aside{background:linear-gradient(180deg,#101d3b 0%,#172b52 100%);border-right:1px solid #ffffff12}
+    .brand-icon{background:linear-gradient(145deg,#f5d58b,#dca63b);color:#14213d;box-shadow:inset 0 1px 0 #ffffff80;font-weight:900}
+    .brand strong{font-size:18px;letter-spacing:1.4px}.brand small{font-size:10px;line-height:1.45;max-width:150px}
+    .brand-official{font-size:9px;letter-spacing:1.3px;text-transform:uppercase;color:#f5d58b;margin:7px 8px 0;font-weight:800}
+    .nav button.active,.nav button:hover{background:#ffffff18;border-left:3px solid var(--gold);padding-left:9px}
+    .topbar{box-shadow:0 2px 10px #0f172a05}.topbar h1{font-size:19px;font-weight:800;letter-spacing:-.3px}
+    .content{padding-top:24px}
+    .hero-dashboard{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:27px 30px;margin-bottom:20px;border-radius:20px;background:linear-gradient(115deg,#101d3b 0%,#1e3a70 65%,#244c8e 100%);color:#fff;box-shadow:0 12px 28px #14264a1a}
+    .hero-dashboard:after{content:"";position:absolute;width:230px;height:230px;border:1px solid #ffffff17;border-radius:50%;right:8%;top:-115px;box-shadow:0 0 0 28px #ffffff08,0 0 0 58px #ffffff05;pointer-events:none}
+    .hero-copy,.hero-actions{position:relative;z-index:1}.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;color:#f5d58b;font-size:10px;font-weight:800;letter-spacing:1.7px;text-transform:uppercase;margin-bottom:12px}
+    .hero-dashboard h2{font-size:clamp(21px,2.3vw,30px);line-height:1.18;margin:0 0 10px;max-width:650px;letter-spacing:-.5px}
+    .hero-dashboard p{color:#d7e2f5;margin:0;line-height:1.6;font-size:13px;max-width:640px}
+    .hero-actions{display:flex;flex-direction:column;gap:9px;min-width:170px}.hero-actions .btn{background:var(--gold);color:#182440;padding:12px 15px;white-space:nowrap}.hero-actions .btn.outline{background:#ffffff12;color:white;border:1px solid #ffffff35}
+    .unit-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.unit-chip{font-size:10px;border:1px solid #ffffff2c;border-radius:20px;padding:6px 10px;color:#e6edf9;background:#ffffff08}
+    .welcome{margin-bottom:16px}.welcome h2{font-size:19px}.welcome p{font-size:12px}
+    .stat,.panel{border-radius:15px;box-shadow:0 3px 14px #1e293b06}.stat{padding:17px 18px;border-top:3px solid #dce6f7}.stat:nth-child(1){border-top-color:#1d4ed8}.stat:nth-child(2){border-top-color:#0d9488}.stat:nth-child(3){border-top-color:#7c3aed}.stat:nth-child(4){border-top-color:#d97706}
+    .stat-icon{background:#edf3ff;color:#1d4ed8}.stat strong{font-size:30px;letter-spacing:-.8px}.panel-head h3{font-size:15px}
+    .login-wrap{background:radial-gradient(circle at 20% 15%,#2a4d85 0%,transparent 32%),linear-gradient(140deg,#101d3b,#1d4ed8)}
+    .login-card{border:1px solid #ffffff90;box-shadow:0 24px 70px #06112d55}.login-card .btn{background:#1d4ed8}
+    .login-official{font-size:10px;letter-spacing:1.15px;color:#64748b;font-weight:800;line-height:1.7;margin-top:2px}
+    .side-foot strong{color:#f5d58b;letter-spacing:.5px}
+    @media(max-width:720px){.hero-dashboard{padding:22px 20px;align-items:flex-start;flex-direction:column}.hero-actions{flex-direction:row;flex-wrap:wrap;width:100%}.hero-actions .btn{white-space:normal}.hero-dashboard:after{right:-80px}.brand small{max-width:none}.brand-official{display:none}}
+
     @media(max-width:1050px){.layout{grid-template-columns:200px 1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.filters{grid-template-columns:1fr 1fr}.filters .search{grid-column:1/-1}}
     @media(max-width:720px){.layout{display:block}aside{padding:12px;gap:12px}.brand{padding:2px}.nav-label,.side-foot{display:none}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:9px 11px}.topbar{height:64px;padding:0 16px}.content{padding:18px 14px}.welcome{align-items:flex-start;flex-direction:column}.stats{gap:9px}.stat{padding:13px}.stat strong{font-size:23px}.filters{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.user-pill span{display:none}}
   </style>
@@ -46,7 +71,7 @@
 <body>
   <div id="loginScreen" class="login-wrap">
     <div class="login-card">
-      <div class="login-brand"><div class="brand-icon">📷</div><div><strong style="font-size:20px;letter-spacing:1px">FOTOKU</strong><small style="display:block;color:#64748b;margin-top:3px">Pusat Dokumentasi Digital</small></div></div>
+      <div class="login-brand"><div class="brand-icon">F</div><div><strong style="font-size:20px;letter-spacing:1px">FOTOKU</strong><small style="display:block;color:#64748b;margin-top:3px">Pusat Dokumentasi Digital</small><div class="login-official">POLSEK JATIROGO · POLRESTA TUBAN</div></div></div>
       <h1>Selamat datang</h1><p>Masuk menggunakan akun petugas yang telah dibuat oleh administrator.</p>
       <div id="loginError"></div>
       <form id="loginForm">
@@ -55,13 +80,13 @@
         <button class="btn" id="loginBtn" type="submit">Masuk ke FOTOKU</button>
       </form>
       <div id="setupHint" class="notice info hidden">Aplikasi belum disiapkan. Jalankan <b>setupFOTOKU()</b> dari editor Apps Script terlebih dahulu.</div>
-      <p style="font-size:11px;margin-top:22px">Akses hanya untuk petugas yang terdaftar.</p>
+      <p style="font-size:11px;margin-top:22px">Akses hanya untuk petugas yang terdaftar.</p><p style="font-size:10px;text-align:center;margin-bottom:0">Dikembangkan oleh <b>masluki.id</b></p>
     </div>
   </div>
 
   <div id="appScreen" class="layout hidden">
     <aside>
-      <div class="brand"><div class="brand-icon">📷</div><div><strong>FOTOKU</strong><small>Dokumentasi Digital</small></div></div>
+      <div><div class="brand"><div class="brand-icon">F</div><div><strong>FOTOKU</strong><small>Pusat Dokumentasi Digital</small></div></div><div class="brand-official">POLSEK JATIROGO · POLRESTA TUBAN</div></div>
       <div class="nav-label">MENU UTAMA</div>
       <nav class="nav">
         <button class="active" data-page="dashboard"><span class="ico">▦</span>Dashboard</button>
@@ -69,13 +94,22 @@
         <button data-page="upload"><span class="ico">⇧</span>Upload File</button>
         <button id="usersNav" data-page="users" class="hidden"><span class="ico">♙</span>Kelola Petugas</button>
       </nav>
-      <div class="side-foot">FOTOKU · Arsip kegiatan terpusat<br>File tersimpan di Google Drive.</div>
+      <div class="side-foot"><strong>POLSEK JATIROGO</strong><br>POLRESTA TUBAN<br>Arsip terpusat · Google Drive<br><span style="font-size:10px;color:#94a3b8">Pengembang: masluki.id</span></div>
     </aside>
     <main>
       <header class="topbar"><div><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Ringkasan dokumentasi kegiatan</p></div><div class="user-pill"><div class="avatar" id="avatar">P</div><span id="userLabel">Petugas</span><button class="btn ghost" id="logoutBtn">Keluar</button></div></header>
       <div class="content">
         <section id="page-dashboard">
-          <div class="welcome"><div><h2>Halo, <span id="welcomeName">Petugas</span> 👋</h2><p>Kelola semua foto, video, dan laporan dokumentasi di sini.</p></div><button class="btn" onclick="showPage('upload')">＋ Upload Dokumentasi</button></div>
+          <div class="hero-dashboard">
+            <div class="hero-copy">
+              <div class="hero-eyebrow"><span>✦</span> PUSAT DOKUMENTASI DIGITAL</div>
+              <h2>FOTOKU — Dokumentasi Kegiatan<br>POLSEK JATIROGO</h2>
+              <p>Platform dokumentasi terpusat untuk menyimpan, mencari, dan mengelola foto, video, serta laporan kegiatan secara tertib dan mudah diakses oleh petugas berwenang.</p>
+              <div class="unit-line"><span class="unit-chip">POLRESTA TUBAN</span><span class="unit-chip">Penyimpanan Google Drive</span><span class="unit-chip">Akses Petugas Terdaftar</span></div>
+            </div>
+            <div class="hero-actions"><button class="btn" onclick="showPage('upload')">＋ Upload Dokumentasi</button><button class="btn outline" onclick="showPage('archive')">▤ Buka Arsip</button></div>
+          </div>
+          <div class="welcome"><div><h2>Selamat datang, <span id="welcomeName">Petugas</span></h2><p>Berikut ringkasan dokumentasi yang tersimpan dalam sistem.</p></div><span style="font-size:11px;color:#68758a">PENGEMBANG <b style="color:#243b63">MASLUKI.ID</b></span></div>
           <div class="stats">
             <div class="stat"><div class="stat-head">Total dokumentasi <span class="stat-icon">▤</span></div><strong id="statTotal">0</strong><small>Arsip aktif</small></div>
             <div class="stat"><div class="stat-head">Foto <span class="stat-icon">▧</span></div><strong id="statPhotos">0</strong><small>File gambar</small></div>
