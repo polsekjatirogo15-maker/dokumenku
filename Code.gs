@@ -14,11 +14,13 @@
  */
 
 const APP_NAME = 'FOTOKU';
-const INITIAL_ADMIN_USERNAME = 'admin';
-const INITIAL_ADMIN_PASSWORD = 'admin';
+const INITIAL_ADMIN_USERNAME = 'GANTI_DENGAN_USERNAME_ADMIN';
+const INITIAL_ADMIN_PASSWORD = 'GANTI_DENGAN_PASSWORD_KUAT_MINIMAL_12_KARAKTER';
 const MAX_FILE_BYTES = 8 * 1024 * 1024;
 const SESSION_SECONDS = 21600; // 6 jam
 const PROP_FOLDER_ID = 'FOTOKU_FOLDER_ID';
+// Folder Drive tujuan yang diberikan pengguna. Akun pemilik script harus punya akses.
+const CONFIGURED_ROOT_FOLDER_ID = '1AMURiORmpzbNt8MFev2Nkuj6LHiy5xRO';
 const PROP_SHEET_ID = 'FOTOKU_SHEET_ID';
 
 function doGet() {
@@ -39,15 +41,10 @@ function setupFOTOKU() {
   }
 
   const props = PropertiesService.getScriptProperties();
-  let folderId = props.getProperty(PROP_FOLDER_ID);
-  let folder;
-  if (folderId) {
-    try { folder = DriveApp.getFolderById(folderId); } catch (e) { folder = null; }
-  }
-  if (!folder) {
-    folder = DriveApp.createFolder('FOTOKU - Arsip Dokumentasi');
-    props.setProperty(PROP_FOLDER_ID, folder.getId());
-  }
+  // Gunakan folder yang ditentukan pengguna, bukan membuat folder root baru.
+  // getFolderById akan menampilkan error jika ID salah atau akun tidak punya akses.
+  const folder = DriveApp.getFolderById(CONFIGURED_ROOT_FOLDER_ID);
+  props.setProperty(PROP_FOLDER_ID, folder.getId());
 
   let ss;
   const sheetId = props.getProperty(PROP_SHEET_ID);
