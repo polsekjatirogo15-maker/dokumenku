@@ -1,324 +1,275 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <base target="_top">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    :root{--navy:#101d3b;--blue:#1d4ed8;--bg:#f3f6fb;--text:#172033;--muted:#68758a;--line:#e5eaf2;--white:#fff;--red:#c62828;--gold:#f2c66d}
-    *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);font-size:14px}
-    button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;font-weight:650}
-    .btn{background:var(--blue);color:#fff}.btn.secondary{background:#eaf0ff;color:#1d4ed8}.btn.ghost{background:#f1f5f9;color:#334155}.btn.danger{background:#fee2e2;color:#b91c1c}
-    .hidden{display:none!important}.layout{min-height:100vh;display:grid;grid-template-columns:240px 1fr}
-    aside{background:var(--navy);color:white;padding:22px 14px;display:flex;flex-direction:column;gap:22px}
-    .brand{display:flex;align-items:center;gap:12px;padding:4px 8px}.brand-icon{width:42px;height:42px;border-radius:13px;background:#ffffff20;display:grid;place-items:center;font-size:22px}
-    .brand strong{font-size:20px;letter-spacing:1px}.brand small{display:block;color:#cbd5e1;margin-top:3px}
-    .nav-label{font-size:10px;letter-spacing:1.5px;color:#94a3b8;padding:0 10px}
-    .nav{display:grid;gap:6px}.nav button{display:flex;align-items:center;gap:12px;text-align:left;background:transparent;color:#dbeafe;padding:12px;border-radius:10px;font-weight:550}
-    .nav button.active,.nav button:hover{background:#ffffff18;color:#fff}.nav .ico{width:20px;text-align:center;font-size:17px}
-    .side-foot{margin-top:auto;padding:12px;color:#cbd5e1;font-size:12px;line-height:1.6;border-top:1px solid #ffffff20}
-    main{min-width:0}.topbar{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;gap:12px}
-    .topbar h1{font-size:20px;margin:0}.topbar p{margin:4px 0 0;color:var(--muted);font-size:12px}.user-pill{display:flex;align-items:center;gap:10px;color:#334155;font-weight:650}
-    .avatar{width:36px;height:36px;background:#dbeafe;color:#1d4ed8;border-radius:50%;display:grid;place-items:center}
-    .content{padding:26px 30px;max-width:1500px;margin:auto}.welcome{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}
-    .welcome h2{font-size:22px;margin:0 0 6px}.welcome p{margin:0;color:var(--muted)}
-    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:22px}.stat,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 2px 8px #0f172a05}
-    .stat-head{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}.stat-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:11px;background:#eff6ff;font-size:18px}
-    .stat strong{font-size:27px;display:block;margin-top:13px}.stat small{color:var(--muted)}.panel{margin-bottom:20px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.panel-head h3{margin:0;font-size:16px}
-    .filters{display:grid;grid-template-columns:minmax(160px,1fr) 170px 150px 150px auto;gap:9px;margin-bottom:15px}
-    input,select,textarea{width:100%;border:1px solid #dbe2ec;border-radius:10px;padding:10px 11px;background:white;color:var(--text);outline:none}
-    input:focus,select:focus,textarea:focus{border-color:#60a5fa;box-shadow:0 0 0 3px #dbeafe}label{display:block;font-size:12px;font-weight:650;color:#475569;margin-bottom:6px}
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field.full{grid-column:1/-1}.field textarea{min-height:95px;resize:vertical}
-    .upload-box{border:1.5px dashed #b8c7dc;background:#f8fbff;border-radius:14px;padding:20px;text-align:center}.upload-box input{border:0;background:transparent}
-    .table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid #edf0f5}th{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#64748b;background:#fafbfd}td{font-size:13px}td .filetitle{font-weight:700;white-space:normal;min-width:150px}td .sub{color:var(--muted);font-size:11px;margin-top:4px;white-space:normal}
-    .tag{display:inline-block;background:#eef2ff;color:#4338ca;padding:5px 8px;border-radius:7px;font-size:11px}.actions{display:flex;gap:6px}.actions button{padding:7px 9px;font-size:12px}
-    .empty{text-align:center;color:var(--muted);padding:34px}.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(140deg,#172554,#1d4ed8)}
-    .login-card{width:min(420px,100%);background:#fff;padding:30px;border-radius:22px;box-shadow:0 24px 80px #0003}.login-brand{display:flex;align-items:center;gap:12px;margin-bottom:25px}.login-brand .brand-icon{background:#dbeafe;color:#1d4ed8}
-    .login-card h1{margin:0 0 8px;font-size:24px}.login-card p{color:var(--muted);line-height:1.5}.login-card .field{margin:16px 0}.login-card .btn{width:100%;padding:12px}
-    .notice{border-radius:10px;padding:11px 12px;margin:12px 0;font-size:13px}.notice.error{background:#fee2e2;color:#991b1b}.notice.ok{background:#dcfce7;color:#166534}.notice.info{background:#eff6ff;color:#1e40af}
-    .loading{opacity:.65;pointer-events:none}.toast{position:fixed;right:20px;bottom:20px;max-width:360px;padding:14px 18px;border-radius:12px;background:#0f172a;color:#fff;box-shadow:0 8px 30px #0002;z-index:20}
-    .modal-backdrop{position:fixed;inset:0;background:#0f172a88;display:grid;place-items:center;padding:18px;z-index:10}.modal{background:#fff;border-radius:18px;padding:22px;width:min(650px,100%);max-height:90vh;overflow:auto}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal-head h3{margin:0}.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
-    .user-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);gap:12px}
-
-    /* Tampilan resmi FOTOKU Polsek Jatirogo — ringan tanpa animasi berat */
-    aside{background:linear-gradient(180deg,#101d3b 0%,#172b52 100%);border-right:1px solid #ffffff12}
-    .brand-icon{background:linear-gradient(145deg,#f5d58b,#dca63b);color:#14213d;box-shadow:inset 0 1px 0 #ffffff80;font-weight:900}
-    .brand strong{font-size:18px;letter-spacing:1.4px}.brand small{font-size:10px;line-height:1.45;max-width:150px}
-    .brand-official{font-size:9px;letter-spacing:1.3px;text-transform:uppercase;color:#f5d58b;margin:7px 8px 0;font-weight:800}
-    .nav button.active,.nav button:hover{background:#ffffff18;border-left:3px solid var(--gold);padding-left:9px}
-    .topbar{box-shadow:0 2px 10px #0f172a05}.topbar h1{font-size:19px;font-weight:800;letter-spacing:-.3px}
-    .content{padding-top:24px}
-    .hero-dashboard{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:27px 30px;margin-bottom:20px;border-radius:20px;background:linear-gradient(115deg,#101d3b 0%,#1e3a70 65%,#244c8e 100%);color:#fff;box-shadow:0 12px 28px #14264a1a}
-    .hero-dashboard:after{content:"";position:absolute;width:230px;height:230px;border:1px solid #ffffff17;border-radius:50%;right:8%;top:-115px;box-shadow:0 0 0 28px #ffffff08,0 0 0 58px #ffffff05;pointer-events:none}
-    .hero-copy,.hero-actions{position:relative;z-index:1}.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;color:#f5d58b;font-size:10px;font-weight:800;letter-spacing:1.7px;text-transform:uppercase;margin-bottom:12px}
-    .hero-dashboard h2{font-size:clamp(21px,2.3vw,30px);line-height:1.18;margin:0 0 10px;max-width:650px;letter-spacing:-.5px}
-    .hero-dashboard p{color:#d7e2f5;margin:0;line-height:1.6;font-size:13px;max-width:640px}
-    .hero-actions{display:flex;flex-direction:column;gap:9px;min-width:170px}.hero-actions .btn{background:var(--gold);color:#182440;padding:12px 15px;white-space:nowrap}.hero-actions .btn.outline{background:#ffffff12;color:white;border:1px solid #ffffff35}
-    .unit-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.unit-chip{font-size:10px;border:1px solid #ffffff2c;border-radius:20px;padding:6px 10px;color:#e6edf9;background:#ffffff08}
-    .welcome{margin-bottom:16px}.welcome h2{font-size:19px}.welcome p{font-size:12px}
-    .stat,.panel{border-radius:15px;box-shadow:0 3px 14px #1e293b06}.stat{padding:17px 18px;border-top:3px solid #dce6f7}.stat:nth-child(1){border-top-color:#1d4ed8}.stat:nth-child(2){border-top-color:#0d9488}.stat:nth-child(3){border-top-color:#7c3aed}.stat:nth-child(4){border-top-color:#d97706}
-    .stat-icon{background:#edf3ff;color:#1d4ed8}.stat strong{font-size:30px;letter-spacing:-.8px}.panel-head h3{font-size:15px}
-    .login-wrap{background:radial-gradient(circle at 20% 15%,#2a4d85 0%,transparent 32%),linear-gradient(140deg,#101d3b,#1d4ed8)}
-    .login-card{border:1px solid #ffffff90;box-shadow:0 24px 70px #06112d55}.login-card .btn{background:#1d4ed8}
-    .login-official{font-size:10px;letter-spacing:1.15px;color:#64748b;font-weight:800;line-height:1.7;margin-top:2px}
-    .side-foot strong{color:#f5d58b;letter-spacing:.5px}
-    @media(max-width:720px){.hero-dashboard{padding:22px 20px;align-items:flex-start;flex-direction:column}.hero-actions{flex-direction:row;flex-wrap:wrap;width:100%}.hero-actions .btn{white-space:normal}.hero-dashboard:after{right:-80px}.brand small{max-width:none}.brand-official{display:none}}
-
-    @media(max-width:1050px){.layout{grid-template-columns:200px 1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.filters{grid-template-columns:1fr 1fr}.filters .search{grid-column:1/-1}}
-    @media(max-width:720px){.layout{display:block}aside{padding:12px;gap:12px}.brand{padding:2px}.nav-label,.side-foot{display:none}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:9px 11px}.topbar{height:64px;padding:0 16px}.content{padding:18px 14px}.welcome{align-items:flex-start;flex-direction:column}.stats{gap:9px}.stat{padding:13px}.stat strong{font-size:23px}.filters{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.user-pill span{display:none}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FOTOKU — Dokumentasi Polsek Jatirogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0c1a3a;--navy2:#14295a;--gold:#e8b94a;--gold2:#f6dc9b;--bg:#f2f4f8;--card:#fff;--ink:#14203a;--mute:#66748b;--line:#e3e8f0;--blue:#2150d8;--r:16px;
+--c-Kegiatan:#2150d8;--c-Foto:#0f9d8a;--c-Video:#7c4ddb;--c-Laporan:#d98a0b;--c-Lainnya:#64748b;
+--d:"Bricolage Grotesque",Figtree,system-ui,sans-serif}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top)}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Figtree,system-ui,Segoe UI,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0}
+:focus-visible{outline:3px solid #93b4ff;outline-offset:2px}
+.hidden{display:none!important}svg{width:1.15em;height:1.15em;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.layout{display:grid;grid-template-columns:256px 1fr;min-height:100vh}
+aside{position:sticky;top:0;height:100vh;background:linear-gradient(185deg,var(--navy),var(--navy2));color:#dbe5fb;padding:24px 16px;display:flex;flex-direction:column;gap:26px}
+.brand{display:flex;gap:12px;align-items:center;padding:0 8px}
+.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(145deg,var(--gold2),var(--gold));color:var(--navy);display:grid;place-items:center;box-shadow:0 6px 18px #e8b94a40}.logo svg{width:24px;height:24px;stroke-width:2.2}
+.brand b{font:800 21px var(--d);letter-spacing:.5px;color:#fff;display:block;line-height:1.1}.brand small{color:#9fb2d8;font-size:12px}
+.unit{margin:0 8px;padding:12px 14px;border-radius:12px;background:#ffffff0d;border:1px solid #ffffff14;font-size:12px;color:#b9c8e6}.unit b{display:block;color:var(--gold2);font:700 14px var(--d);margin-bottom:2px}
+nav{display:grid;gap:4px}nav button{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:none;color:#c3d0ea;font-weight:600;text-align:left;transition:background .15s}
+nav button:hover{background:#ffffff12;color:#fff}nav button.on{background:#fff;color:var(--navy);box-shadow:0 6px 16px #0003}nav button.on svg{color:var(--blue)}
+.foot{margin-top:auto;font-size:11.5px;color:#8ea2c9;padding:0 8px}.foot b{color:#fff}
+main{min-width:0}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;height:72px;padding:0 32px;background:#f2f4f8e6;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top h1{font:800 22px var(--d);margin:0;letter-spacing:-.3px}.top p{margin:0;color:var(--mute);font-size:12.5px}
+.status{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:99px;background:#fff;border:1px solid var(--line);white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:#aab4c5}.status.ok .dot{background:#16a34a;box-shadow:0 0 0 4px #16a34a22}.status.bad .dot{background:#dc2626;box-shadow:0 0 0 4px #dc262622}
+.wrap{padding:28px 32px 60px;max-width:1280px;margin:auto}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border-radius:12px;font-weight:700;background:var(--blue);color:#fff;transition:transform .12s,box-shadow .12s}
+.btn:hover{box-shadow:0 8px 20px #2150d83d}.btn:active{transform:translateY(1px)}.btn:disabled{opacity:.6;cursor:wait}
+.btn.gold{background:var(--gold);color:var(--navy)}.btn.soft{background:#e9efff;color:var(--blue)}.btn.ghost{background:#fff;border:1px solid var(--line);color:#3b4a64}.btn.sm{padding:8px 12px;font-size:13px;border-radius:10px}
+.hero{position:relative;overflow:hidden;border-radius:22px;padding:30px 34px;margin-bottom:22px;background:linear-gradient(120deg,var(--navy),#1b3a80);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.hero:before{content:"";position:absolute;right:-60px;top:-90px;width:320px;height:320px;border-radius:50%;border:2px solid #e8b94a55;box-shadow:0 0 0 34px #e8b94a14,0 0 0 72px #e8b94a0c}
+.hero>*{position:relative}.hero h2{font:800 clamp(24px,3vw,34px)/1.12 var(--d);margin:0 0 10px;letter-spacing:-.6px}.hero p{margin:0;color:#c7d5f2;max-width:520px}
+.hero .acts{display:flex;gap:10px;flex-wrap:wrap}.hero .btn.ghost{background:#ffffff14;border-color:#ffffff33;color:#fff}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;gap:14px;align-items:center}
+.ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--c)}.ico svg{width:22px;height:22px}
+.stat strong{display:block;font:800 28px/1 var(--d);letter-spacing:-.5px}.stat span{color:var(--mute);font-size:12.5px}
+.cols{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}.ph h3{font:700 17px var(--d);margin:0}
+.row{display:grid;grid-template-columns:auto 1fr auto auto;gap:14px;align-items:center;padding:13px 4px;border-top:1px solid var(--line)}.row:first-child{border-top:0}
+.row .t{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.row .m{color:var(--mute);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip{display:inline-block;padding:4px 10px;border-radius:99px;font-size:12px;font-weight:700;background:color-mix(in srgb,var(--c) 13%,#fff);color:var(--c)}
+.bars{display:grid;gap:14px}.bar b{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}.bar i{display:block;height:9px;border-radius:9px;background:#edf1f7;overflow:hidden}.bar i s{display:block;height:100%;border-radius:9px;background:var(--c);transition:width .6s}
+.filters{display:grid;grid-template-columns:1fr 170px 150px 150px auto;gap:10px;margin-bottom:12px}
+input,select,textarea{width:100%;padding:11px 13px;border-radius:12px;border:1px solid #d6dde9;background:#fff;outline:none;transition:border .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:#6b94ff;box-shadow:0 0 0 4px #dbe6ff}textarea{min-height:110px;resize:vertical}
+label{display:block;font-weight:700;font-size:13px;margin-bottom:6px;color:#34425c}
+.up{display:grid;grid-template-columns:1fr 1fr;gap:22px}.fields{display:grid;gap:16px;align-content:start}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.drop{position:relative;min-height:330px;border:2px dashed #b4c3dd;border-radius:18px;background:linear-gradient(#f8faff,#f1f5fd);display:grid;place-items:center;text-align:center;padding:20px;transition:.15s;overflow:hidden}
+.drop.over{border-color:var(--blue);background:#eaf0ff;transform:scale(1.01)}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;padding:0}
+.drop .big{width:68px;height:68px;border-radius:20px;background:#e3ebff;color:var(--blue);display:grid;place-items:center;margin:0 auto 14px}.drop .big svg{width:32px;height:32px}
+.drop h4{font:700 18px var(--d);margin:0 0 4px}.drop p{margin:0;color:var(--mute)}
+.prev{display:none;width:100%}.prev.on{display:block}.prev img,.prev video{width:100%;max-height:230px;object-fit:contain;border-radius:12px;background:#0c1a3a0d}
+.fi{display:flex;align-items:center;gap:12px;margin-top:12px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px}.fi div{min-width:0}.fi b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fi small{color:var(--mute)}
+.pbar{height:6px;border-radius:6px;background:#e4eaf5;overflow:hidden;margin-top:12px;display:none}.pbar.on{display:block}.pbar:after{content:"";display:block;height:100%;width:40%;background:var(--blue);border-radius:6px;animation:run 1.1s infinite ease-in-out}
+@keyframes run{0%{margin-left:-40%}100%{margin-left:100%}}
+.submit{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.empty{text-align:center;padding:42px 10px;color:var(--mute)}.empty svg{width:42px;height:42px;color:#b4c0d6;margin-bottom:8px}.empty b{display:block;color:var(--ink);font-size:15px}
+.alert{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:14px;background:#fff1f0;border:1px solid #fbc9c5;color:#8f1d16}.alert b{display:block}.alert .btn{margin-left:auto}
+.sk{height:56px;border-radius:12px;margin:8px 0;background:linear-gradient(90deg,#eef2f8 25%,#f7f9fc 50%,#eef2f8 75%);background-size:200% 100%;animation:sh 1.2s infinite}@keyframes sh{to{background-position:-200% 0}}
+#toasts{position:fixed;right:20px;bottom:20px;display:grid;gap:10px;z-index:50}
+.toast{display:flex;gap:10px;align-items:flex-start;max-width:380px;padding:14px 16px;border-radius:14px;background:var(--navy);color:#fff;box-shadow:0 14px 36px #0c1a3a40;animation:in .25s}.toast.err{background:#9b1c1c}.toast.ok svg{color:#6ee7a8}
+@keyframes in{from{transform:translateY(12px);opacity:0}}
+.tabs{display:none}
+@media(max-width:1020px){.stats{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters input:first-child{grid-column:1/-1}.up{grid-template-columns:1fr}}
+@media(max-width:760px){
+.layout{display:block}aside{display:none}.top{height:64px;padding:0 16px}.status span{display:none}.wrap{padding:18px 14px 110px}
+.hero{padding:24px 20px;flex-direction:column;align-items:flex-start}.row{grid-template-columns:auto 1fr auto}.row .chip{display:none}
+.two{grid-template-columns:1fr}#toasts{left:14px;right:14px;bottom:88px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:9;background:var(--navy);border-radius:20px;padding:6px;box-shadow:0 12px 30px #0c1a3a55}
+.tabs button{background:none;color:#9fb2d8;display:grid;justify-items:center;gap:2px;padding:8px;border-radius:14px;font-size:11.5px;font-weight:700}.tabs button.on{background:#ffffff1c;color:#fff}.tabs svg{width:21px;height:21px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
-  <div id="loginScreen" class="login-wrap">
-    <div class="login-card">
-      <div class="login-brand"><div class="brand-icon">F</div><div><strong style="font-size:20px;letter-spacing:1px">FOTOKU</strong><small style="display:block;color:#64748b;margin-top:3px">Pusat Dokumentasi Digital</small><div class="login-official">POLSEK JATIROGO · POLRESTA TUBAN</div></div></div>
-      <h1>Selamat datang</h1><p>Masuk menggunakan akun petugas yang telah dibuat oleh administrator.</p>
-      <div id="loginError"></div>
-      <form id="loginForm">
-        <div class="field"><label for="loginUser">Username</label><input id="loginUser" autocomplete="username" required placeholder="Masukkan username"></div>
-        <div class="field"><label for="loginPass">Password</label><input id="loginPass" type="password" autocomplete="current-password" required placeholder="Masukkan password"></div>
-        <button class="btn" id="loginBtn" type="submit">Masuk ke FOTOKU</button>
-      </form>
-      <div id="setupHint" class="notice info hidden">Aplikasi belum disiapkan. Jalankan <b>setupFOTOKU()</b> dari editor Apps Script terlebih dahulu.</div>
-      <p style="font-size:11px;margin-top:22px">Akses hanya untuk petugas yang terdaftar.</p><p style="font-size:10px;text-align:center;margin-bottom:0">Dikembangkan oleh <b>masluki.id</b></p>
-    </div>
-  </div>
+<div class="layout">
+<aside>
+  <div class="brand"><div class="logo" data-ic="shield"></div><div><b>FOTOKU</b><small>Pusat Dokumentasi Digital</small></div></div>
+  <div class="unit"><b>Polsek Jatirogo</b>Polresta Tuban</div>
+  <nav>
+    <button class="on" data-page="dashboard"><span data-ic="grid"></span>Dashboard</button>
+    <button data-page="archive"><span data-ic="folder"></span>Arsip Dokumentasi</button>
+    <button data-page="upload"><span data-ic="upload"></span>Upload File</button>
+  </nav>
+  <div class="foot">Arsip tersimpan di Google Drive<br>Pengembang <b>masluki.id</b></div>
+</aside>
+<main>
+  <header class="top"><div><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Ringkasan dokumentasi kegiatan</p></div><div class="status" id="status"><i class="dot"></i><span>Menghubungkan…</span></div></header>
+  <div class="wrap">
+    <div id="banner"></div>
 
-  <div id="appScreen" class="layout hidden">
-    <aside>
-      <div><div class="brand"><div class="brand-icon">F</div><div><strong>FOTOKU</strong><small>Pusat Dokumentasi Digital</small></div></div><div class="brand-official">POLSEK JATIROGO · POLRESTA TUBAN</div></div>
-      <div class="nav-label">MENU UTAMA</div>
-      <nav class="nav">
-        <button class="active" data-page="dashboard"><span class="ico">▦</span>Dashboard</button>
-        <button data-page="archive"><span class="ico">▤</span>Arsip Dokumentasi</button>
-        <button data-page="upload"><span class="ico">⇧</span>Upload File</button>
-        <button id="usersNav" data-page="users" class="hidden"><span class="ico">♙</span>Kelola Petugas</button>
-      </nav>
-      <div class="side-foot"><strong>POLSEK JATIROGO</strong><br>POLRESTA TUBAN<br>Arsip terpusat · Google Drive<br><span style="font-size:10px;color:#94a3b8">Pengembang: masluki.id</span></div>
-    </aside>
-    <main>
-      <header class="topbar"><div><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Ringkasan dokumentasi kegiatan</p></div><div class="user-pill"><div class="avatar" id="avatar">P</div><span id="userLabel">Petugas</span><span style="font-size:11px;color:#64748b">Akses tanpa login</span></div></header>
-      <div class="content">
-        <section id="page-dashboard">
-          <div class="hero-dashboard">
-            <div class="hero-copy">
-              <div class="hero-eyebrow"><span>✦</span> PUSAT DOKUMENTASI DIGITAL</div>
-              <h2>FOTOKU — Dokumentasi Kegiatan<br>POLSEK JATIROGO</h2>
-              <p>Platform dokumentasi terpusat untuk menyimpan, mencari, dan mengelola foto, video, serta laporan kegiatan secara tertib dan mudah diakses oleh petugas berwenang.</p>
-              <div class="unit-line"><span class="unit-chip">POLRESTA TUBAN</span><span class="unit-chip">Penyimpanan Google Drive</span><span class="unit-chip">Akses Petugas Terdaftar</span></div>
-            </div>
-            <div class="hero-actions"><button class="btn" onclick="showPage('upload')">＋ Upload Dokumentasi</button><button class="btn outline" onclick="showPage('archive')">▤ Buka Arsip</button></div>
-          </div>
-          <div class="welcome"><div><h2>Selamat datang, <span id="welcomeName">Petugas</span></h2><p>Berikut ringkasan dokumentasi yang tersimpan dalam sistem.</p></div><span style="font-size:11px;color:#68758a">PENGEMBANG <b style="color:#243b63">MASLUKI.ID</b></span></div>
-          <div class="stats">
-            <div class="stat"><div class="stat-head">Total dokumentasi <span class="stat-icon">▤</span></div><strong id="statTotal">0</strong><small>Arsip aktif</small></div>
-            <div class="stat"><div class="stat-head">Foto <span class="stat-icon">▧</span></div><strong id="statPhotos">0</strong><small>File gambar</small></div>
-            <div class="stat"><div class="stat-head">Video <span class="stat-icon">▷</span></div><strong id="statVideos">0</strong><small>File video</small></div>
-            <div class="stat"><div class="stat-head">Laporan <span class="stat-icon">▤</span></div><strong id="statReports">0</strong><small>PDF dan dokumen</small></div>
-          </div>
-          <div class="panel"><div class="panel-head"><h3>Dokumentasi terbaru</h3><button class="btn secondary" onclick="showPage('archive')">Lihat semua</button></div><div id="recentTable"></div></div>
-        </section>
-
-        <section id="page-archive" class="hidden">
-          <div class="welcome"><div><h2>Arsip Dokumentasi</h2><p>Cari dan unduh file yang telah tersimpan.</p></div><button class="btn" onclick="showPage('upload')">＋ Upload File</button></div>
-          <div class="panel">
-            <div class="filters">
-              <input class="search" id="searchQuery" placeholder="Cari judul, nama file, keterangan...">
-              <select id="filterCategory"><option value="">Semua kategori</option><option>Kegiatan</option><option>Foto</option><option>Video</option><option>Laporan</option><option>Lainnya</option></select>
-              <input id="filterStart" type="date" title="Dari tanggal">
-              <input id="filterEnd" type="date" title="Sampai tanggal">
-              <button class="btn secondary" id="filterBtn">Cari</button>
-            </div>
-            <div id="archiveTable"></div>
-          </div>
-        </section>
-
-        <section id="page-upload" class="hidden">
-          <div class="welcome"><div><h2>Upload Dokumentasi</h2><p>Tambahkan foto, video, laporan, atau dokumen kegiatan.</p></div></div>
-          <div class="panel">
-            <form id="uploadForm">
-              <div class="form-grid">
-                <div class="field"><label for="docTitle">Judul dokumentasi *</label><input id="docTitle" required maxlength="150" placeholder="Contoh: Dokumentasi kegiatan apel pagi"></div>
-                <div class="field"><label for="docCategory">Kategori *</label><select id="docCategory" required><option>Kegiatan</option><option>Foto</option><option>Video</option><option>Laporan</option><option>Lainnya</option></select></div>
-                <div class="field"><label for="eventDate">Tanggal kegiatan</label><input id="eventDate" type="date"></div>
-                <div class="field"><label for="docFile">Pilih file * (maksimal 3 MB)</label><input id="docFile" type="file" required accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip"></div>
-                <div class="field full"><label for="docDescription">Keterangan</label><textarea id="docDescription" maxlength="1000" placeholder="Lokasi, nama kegiatan, petugas, atau catatan lainnya..."></textarea></div>
-                <div class="field full"><div class="upload-box"><div style="font-size:30px">☁️</div><strong>File akan disimpan ke Google Drive</strong><p id="fileInfo" style="color:#64748b;margin-bottom:0">Pilih file dari komputer Anda.</p></div></div>
-              </div>
-              <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px"><button type="reset" class="btn ghost">Reset</button><button id="uploadBtn" class="btn" type="submit">Upload Dokumentasi</button></div>
-            </form>
-          </div>
-        </section>
-
-        <section id="page-users" class="hidden">
-          <div class="welcome"><div><h2>Kelola Petugas</h2><p>Hanya administrator yang dapat menambah atau menonaktifkan akun.</p></div><button class="btn" id="newUserBtn">＋ Tambah Petugas</button></div>
-          <div class="panel"><div id="usersList"></div></div>
-        </section>
+    <section id="page-dashboard">
+      <div class="hero">
+        <div><h2>Dokumentasi kegiatan,<br>rapi dan mudah dicari.</h2><p>Simpan foto, video, dan laporan kegiatan Polsek Jatirogo di satu tempat, lalu temukan kembali dalam hitungan detik.</p></div>
+        <div class="acts"><button class="btn gold" data-go="upload"><span data-ic="plus"></span>Upload dokumentasi</button><button class="btn ghost" data-go="archive">Buka arsip</button></div>
       </div>
-    </main>
-  </div>
+      <div class="stats">
+        <div class="stat" style="--c:#2150d8"><div class="ico" data-ic="folder"></div><div><strong id="sTotal">–</strong><span>Total dokumentasi</span></div></div>
+        <div class="stat" style="--c:#0f9d8a"><div class="ico" data-ic="image"></div><div><strong id="sPhotos">–</strong><span>Foto</span></div></div>
+        <div class="stat" style="--c:#7c4ddb"><div class="ico" data-ic="video"></div><div><strong id="sVideos">–</strong><span>Video</span></div></div>
+        <div class="stat" style="--c:#d98a0b"><div class="ico" data-ic="file"></div><div><strong id="sReports">–</strong><span>Laporan &amp; dokumen</span></div></div>
+      </div>
+      <div class="cols">
+        <div class="panel"><div class="ph"><h3>Dokumentasi terbaru</h3><button class="btn soft sm" data-go="archive">Lihat semua</button></div><div id="recent"></div></div>
+        <div class="panel"><div class="ph"><h3>Berdasarkan kategori</h3></div><div class="bars" id="cats"></div></div>
+      </div>
+    </section>
 
-  <div id="modalHost"></div><div id="toastHost"></div>
+    <section id="page-archive" class="hidden">
+      <div class="panel">
+        <div class="filters">
+          <input id="q" placeholder="Cari judul, nama file, keterangan…" aria-label="Cari">
+          <select id="fc" aria-label="Kategori"><option value="">Semua kategori</option><option>Kegiatan</option><option>Foto</option><option>Video</option><option>Laporan</option><option>Lainnya</option></select>
+          <input id="fs" type="date" aria-label="Dari tanggal"><input id="fe" type="date" aria-label="Sampai tanggal">
+          <button class="btn" id="fb"><span data-ic="search"></span>Cari</button>
+        </div>
+        <div id="list"></div>
+      </div>
+    </section>
+
+    <section id="page-upload" class="hidden">
+      <form id="form" class="panel">
+        <div class="up">
+          <div class="fields">
+            <div><label for="title">Judul dokumentasi *</label><input id="title" required maxlength="150" placeholder="Contoh: Apel pagi anggota Polsek Jatirogo"></div>
+            <div class="two">
+              <div><label for="cat">Kategori *</label><select id="cat"><option>Kegiatan</option><option>Foto</option><option>Video</option><option>Laporan</option><option>Lainnya</option></select></div>
+              <div><label for="date">Tanggal kegiatan</label><input id="date" type="date"></div>
+            </div>
+            <div><label for="desc">Keterangan</label><textarea id="desc" maxlength="1000" placeholder="Lokasi, nama kegiatan, petugas, atau catatan lain"></textarea></div>
+          </div>
+          <div>
+            <label>File * <span style="font-weight:500;color:var(--mute)">(maksimal 3 MB)</span></label>
+            <div class="drop" id="drop">
+              <input id="file" type="file" accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip" aria-label="Pilih file">
+              <div id="dropIdle"><div class="big" data-ic="cloud"></div><h4>Tarik file ke sini</h4><p>atau klik untuk memilih dari perangkat</p></div>
+              <div class="prev" id="prev"><div id="prevMedia"></div><div class="fi"><div class="ico" id="fiIco" style="--c:#2150d8"></div><div><b id="fiName"></b><small id="fiSize"></small></div></div></div>
+            </div>
+            <div class="pbar" id="pbar"></div>
+          </div>
+        </div>
+        <div class="submit"><button type="reset" class="btn ghost">Kosongkan</button><button class="btn" id="send" type="submit"><span data-ic="upload"></span><span class="lbl">Upload dokumentasi</span></button></div>
+      </form>
+    </section>
+  </div>
+</main>
+</div>
+<div class="tabs"><button class="on" data-page="dashboard"><span data-ic="grid"></span>Beranda</button><button data-page="archive"><span data-ic="folder"></span>Arsip</button><button data-page="upload"><span data-ic="upload"></span>Upload</button></div>
+<div id="toasts" aria-live="polite"></div>
+
 <script>
-  let token = sessionStorage.getItem('fotoku_token') || '';
-  let currentUser = null;
-  const $ = id => document.getElementById(id);
-  const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const formatSize = n => n < 1024 ? n+' B' : n < 1048576 ? (n/1024).toFixed(1)+' KB' : (n/1048576).toFixed(2)+' MB';
-  function callServer(fn, ...args) {
-    return fetch('/api/gas', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fn, args })
-    }).then(async response => {
-      let result;
-      try { result = await response.json(); } catch (_) { throw new Error('Respons backend tidak valid. Periksa URL Web App Apps Script di Vercel.'); }
-      if (!response.ok) throw new Error(result.error || 'Permintaan ke server gagal.');
-      if (!result.ok) throw new Error(result.error || 'Permintaan tidak berhasil.');
-      return result.data;
-    });
-  }
-  function toast(message, error=false) {
-    $('toastHost').innerHTML = `<div class="toast" style="${error?'background:#991b1b':''}">${esc(message)}</div>`;
-    setTimeout(()=>{$('toastHost').innerHTML='';},4000);
-  }
-  function setBusy(button, busy, text) {
-    if (!button) return;
-    if (busy) { button.dataset.oldText = button.textContent; button.textContent = text || 'Memproses...'; button.disabled = true; }
-    else { button.textContent = button.dataset.oldText || button.textContent; button.disabled = false; }
-  }
-  async function boot() {
-    // Mode tanpa login: langsung buka dashboard. Akses data menjadi publik.
-    $('loginScreen').classList.add('hidden');
-    $('appScreen').classList.remove('hidden');
-    $('usersNav').classList.add('hidden');
-    $('userLabel').textContent = 'Akses Umum';
-    $('welcomeName').textContent = 'Petugas';
-    try { await loadDashboard(); }
-    catch (e) { toast('Gagal memuat data: ' + (e.message || 'Periksa backend Apps Script'), true); }
-  }
-  $('loginForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    const btn = $('loginBtn'); setBusy(btn,true,'Memeriksa...');
-    $('loginError').innerHTML = '';
-    try {
-      const res = await callServer('login',$('loginUser').value,$('loginPass').value);
-      token=res.token; sessionStorage.setItem('fotoku_token',token);
-      currentUser={username:res.username,role:res.role};
-      $('loginPass').value='';
-      await enterApp();
-    } catch(err) { $('loginError').innerHTML=`<div class="notice error">${esc(err.message)}</div>`; }
-    finally { setBusy(btn,false); }
-  });
-  async function enterApp() {
-    $('loginScreen').classList.add('hidden'); $('appScreen').classList.remove('hidden');
-    $('userLabel').textContent=currentUser.username; $('welcomeName').textContent=currentUser.username;
-    $('avatar').textContent=currentUser.username.slice(0,1).toUpperCase();
-    $('usersNav').classList.add('hidden');
-    await loadDashboard();
-  }
-  async function loadDashboard() {
-    const d=await callServer('getDashboard',token);
-    currentUser=d.user;
-    $('loginScreen').classList.add('hidden'); $('appScreen').classList.remove('hidden');
-    $('userLabel').textContent=currentUser.username; $('welcomeName').textContent=currentUser.username;
-    $('avatar').textContent=currentUser.username.slice(0,1).toUpperCase();
-    $('usersNav').classList.add('hidden');
-    $('statTotal').textContent=d.total; $('statPhotos').textContent=d.photos; $('statVideos').textContent=d.videos; $('statReports').textContent=d.reports;
-    renderTable($('recentTable'),d.recent,false);
-  }
-  const pageInfo={dashboard:['Dashboard','Ringkasan dokumentasi kegiatan'],archive:['Arsip Dokumentasi','Pusat pencarian dan unduhan file'],upload:['Upload Dokumentasi','Simpan dokumentasi baru ke Google Drive'],users:['Kelola Petugas','Atur akun dan akses petugas']};
-  async function showPage(name) {
-    if(name==='users' && currentUser.role!=='admin') return;
-    Object.keys(pageInfo).forEach(p=>$('page-'+p).classList.toggle('hidden',p!==name));
-    document.querySelectorAll('.nav button[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===name));
-    $('pageTitle').textContent=pageInfo[name][0]; $('pageSub').textContent=pageInfo[name][1];
-    if(name==='archive') await loadArchive();
-    if(name==='users') await loadUsers();
-    if(name==='dashboard') await loadDashboard();
-    window.scrollTo({top:0,behavior:'auto'});
-  }
-  document.querySelectorAll('.nav button[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
-  // Tombol logout tidak digunakan pada mode tanpa login.
-  $('filterBtn').addEventListener('click',loadArchive);
-  $('searchQuery').addEventListener('keydown',e=>{if(e.key==='Enter')loadArchive()});
-  async function loadArchive(){
-    const host=$('archiveTable');host.innerHTML='<div class="empty">Memuat arsip...</div>';
-    try{
-      const docs=await callServer('listDocuments',token,{query:$('searchQuery').value,category:$('filterCategory').value,startDate:$('filterStart').value,endDate:$('filterEnd').value});
-      renderTable(host,docs,true);
-    }catch(e){host.innerHTML=`<div class="notice error">${esc(e.message)}</div>`;handleSession(e)}
-  }
-  function renderTable(host,docs,allowDelete){
-    if(!docs||!docs.length){host.innerHTML='<div class="empty">📂<br><br>Belum ada dokumentasi yang cocok.</div>';return}
-    const isAdmin=currentUser&&currentUser.role==='admin';
-    host.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Dokumentasi</th><th>Kategori</th><th>Tanggal kegiatan</th><th>File / Pengunggah</th><th>Aksi</th></tr></thead><tbody>${docs.map(d=>`<tr>
-      <td><div class="filetitle">${esc(d.title)}</div><div class="sub">${esc(d.description||'Tanpa keterangan')}</div></td>
-      <td><span class="tag">${esc(d.category)}</span></td><td>${esc(d.eventDate||'-')}</td>
-      <td><div>${esc(d.fileName)}</div><div class="sub">${formatSize(d.size)} · ${esc(d.uploader)}</div></td>
-      <td><div class="actions"><button class="btn secondary" onclick="downloadFile('${esc(d.id)}')">↓ Unduh</button>${allowDelete&&isAdmin?`<button class="btn danger" onclick="deleteFile('${esc(d.id)}')">Hapus</button>`:''}</div></td>
-    </tr>`).join('')}</tbody></table></div>`;
-  }
-  async function downloadFile(id){
-    try{
-      toast('Menyiapkan unduhan...');
-      const d=await callServer('downloadDocument',token,id);
-      const raw=atob(d.base64);const bytes=new Uint8Array(raw.length);
-      for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
-      const blob=new Blob([bytes],{type:d.mimeType||'application/octet-stream'});
-      const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=d.fileName||'download';document.body.appendChild(a);a.click();a.remove();
-      setTimeout(()=>URL.revokeObjectURL(url),30000);toast('Unduhan dimulai.');
-    }catch(e){toast(e.message,true);handleSession(e)}
-  }
-  async function deleteFile(id){
-    if(!confirm('Hapus dokumentasi ini? File akan dipindahkan ke Sampah Google Drive.'))return;
-    try{await callServer('deleteDocument',token,id);toast('Dokumentasi dihapus.');await loadArchive();await refreshStats()}
-    catch(e){toast(e.message,true)}
-  }
-  async function refreshStats(){try{const d=await callServer('getDashboard',token);$('statTotal').textContent=d.total;$('statPhotos').textContent=d.photos;$('statVideos').textContent=d.videos;$('statReports').textContent=d.reports;renderTable($('recentTable'),d.recent,false)}catch(e){}}
-  $('docFile').addEventListener('change',()=>{
-    const f=$('docFile').files[0];$('fileInfo').textContent=f?`${f.name} · ${formatSize(f.size)}`:'Pilih file dari komputer Anda.';
-  });
-  $('uploadForm').addEventListener('submit',async e=>{
-    e.preventDefault();
-    const file=$('docFile').files[0];if(!file){toast('Pilih file terlebih dahulu.',true);return}
-    if(file.size>3*1024*1024){toast('Ukuran file maksimal 3 MB saat memakai Vercel.',true);return}
-    const btn=$('uploadBtn');setBusy(btn,true,'Mengunggah...');
-    try{
-      const base64=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]||'');reader.onerror=()=>reject(new Error('File tidak dapat dibaca.'));reader.readAsDataURL(file)});
-      await callServer('uploadDocument',token,{title:$('docTitle').value,category:$('docCategory').value,eventDate:$('eventDate').value,description:$('docDescription').value,fileName:file.name,mimeType:file.type||'application/octet-stream',base64});
-      $('uploadForm').reset();$('fileInfo').textContent='Pilih file dari komputer Anda.';toast('Upload berhasil. File tersimpan di Google Drive.');
-      await refreshStats();showPage('archive');
-    }catch(err){toast(err.message,true);handleSession(err)}
-    finally{setBusy(btn,false)}
-  });
-  $('uploadForm').addEventListener('reset',()=>setTimeout(()=>$('fileInfo').textContent='Pilih file dari komputer Anda.',0));
-  $('newUserBtn').addEventListener('click',showUserModal);
-  function showUserModal(){
-    $('modalHost').innerHTML=`<div class="modal-backdrop"><div class="modal"><div class="modal-head"><h3>Tambah akun petugas</h3><button class="btn ghost" onclick="closeModal()">✕</button></div>
-      <form id="newUserForm"><div class="field" style="margin-bottom:13px"><label>Username</label><input id="newUsername" required minlength="3" maxlength="60" pattern="[a-zA-Z0-9._-]+" placeholder="contoh: petugas01"></div>
-      <div class="field" style="margin-bottom:13px"><label>Password (minimal 12 karakter)</label><input id="newPassword" type="password" required minlength="12" autocomplete="new-password"></div>
-      <div class="field"><label>Hak akses</label><select id="newRole"><option value="petugas">Petugas — upload, cari, unduh</option><option value="admin">Admin — termasuk kelola petugas dan hapus</option></select></div>
-      <div id="newUserError"></div><div class="modal-foot"><button type="button" class="btn ghost" onclick="closeModal()">Batal</button><button class="btn" type="submit">Buat akun</button></div></form></div></div>`;
-    $('newUserForm').addEventListener('submit',async e=>{
-      e.preventDefault();try{await callServer('addUser',token,$('newUsername').value,$('newPassword').value,$('newRole').value);closeModal();toast('Akun petugas berhasil dibuat.');loadUsers()}
-      catch(err){$('newUserError').innerHTML=`<div class="notice error">${esc(err.message)}</div>`}
-    });
-  }
-  function closeModal(){$('modalHost').innerHTML=''}
-  async function loadUsers(){
-    const host=$('usersList');host.innerHTML='<div class="empty">Memuat pengguna...</div>';
-    try{const users=await callServer('listUsers',token);host.innerHTML=users.map(u=>`<div class="user-row"><div><strong>${esc(u.username)}</strong><div class="sub">${esc(u.role)} · ${u.active?'Aktif':'Nonaktif'}</div></div><button class="btn ${u.active?'danger':'secondary'}" onclick="toggleUser('${esc(u.username)}',${!u.active})">${u.active?'Nonaktifkan':'Aktifkan'}</button></div>`).join('')||'<div class="empty">Belum ada pengguna.</div>'}
-    catch(e){host.innerHTML=`<div class="notice error">${esc(e.message)}</div>`}
-  }
-  async function toggleUser(username,active){
-    if(!confirm((active?'Aktifkan':'Nonaktifkan')+' akun '+username+'?'))return;
-    try{await callServer('setUserActive',token,username,active);toast('Status akun diperbarui.');loadUsers()}catch(e){toast(e.message,true)}
-  }
-  function handleSession(e){
-    if(/sesi berakhir|login kembali/i.test(e.message||'')){token='';sessionStorage.removeItem('fotoku_token');$('appScreen').classList.add('hidden');$('loginScreen').classList.remove('hidden');$('loginError').innerHTML='<div class="notice error">Sesi berakhir. Silakan login kembali.</div>'}
-  }
-  boot();
+const $=id=>document.getElementById(id),MAX=3*1024*1024;
+const P={grid:'<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',
+folder:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+upload:'<path d="M12 16V4m0 0L7 9m5-5 5 5M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>',
+download:'<path d="M12 4v12m0 0 5-5m-5 5-5-5M4 18v0a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2"/>',
+image:'<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5-5-9 9"/>',
+video:'<rect x="3" y="5" width="13" height="14" rx="3"/><path d="m16 10 5-3v10l-5-3"/>',
+file:'<path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',plus:'<path d="M12 5v14M5 12h14"/>',
+cloud:'<path d="M7 18a4 4 0 0 1-.6-7.96A6 6 0 0 1 18 9.5 4.3 4.3 0 0 1 17.5 18H7z"/><path d="m12 11-2.5 2.5M12 11l2.5 2.5M12 11v6"/>',
+shield:'<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/>',
+check:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',warn:'<path d="M12 4 2.5 20h19z"/><path d="M12 10v4m0 3v.01"/>'};
+const ic=n=>`<svg viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
+const fill=(root=document)=>root.querySelectorAll('[data-ic]').forEach(e=>{if(!e.firstChild)e.innerHTML=ic(e.dataset.ic)});
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const size=n=>n<1024?n+' B':n<1048576?(n/1024).toFixed(1)+' KB':(n/1048576).toFixed(2)+' MB';
+const MON=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const dt=s=>{const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(s||'');return m?`${+m[3]} ${MON[+m[2]-1]} ${m[1]}`:'Tanpa tanggal'};
+const kind=m=>/^image\//.test(m)?['image','#0f9d8a']:/^video\//.test(m)?['video','#7c4ddb']:['file','#d98a0b'];
+const CATS=['Kegiatan','Foto','Video','Laporan','Lainnya'];
+
+function toast(msg,type='ok'){const t=document.createElement('div');t.className='toast '+type;t.innerHTML=ic(type==='err'?'warn':'check')+`<div>${esc(msg)}</div>`;$('toasts').append(t);setTimeout(()=>t.remove(),type==='err'?7000:4000)}
+
+async function api(fn,...args){
+  const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),90000);
+  let res,text;
+  try{res=await fetch('/api/gas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fn,args}),signal:ctl.signal});text=await res.text()}
+  catch(e){throw new Error(e.name==='AbortError'?'Server terlalu lama merespons. Coba lagi sebentar lagi.':'Tidak ada koneksi internet atau server tidak dapat dijangkau.')}
+  finally{clearTimeout(timer)}
+  let j;try{j=JSON.parse(text)}catch(_){
+    if(res.status===404)throw new Error('Endpoint /api/gas tidak ditemukan. Pastikan file api/gas.js ada di repositori GitHub, lalu redeploy di Vercel.');
+    if(res.status===413)throw new Error('File terlalu besar untuk dikirim. Gunakan file di bawah 3 MB.');
+    throw new Error(`Server mengembalikan jawaban tidak valid (kode ${res.status}). Cek Logs di Vercel.`)}
+  if(!res.ok||!j.ok)throw new Error(j.error||'Permintaan gagal.');
+  return j.data;
+}
+
+let page='dashboard';
+const titles={dashboard:['Dashboard','Ringkasan dokumentasi kegiatan'],archive:['Arsip Dokumentasi','Cari dan unduh file yang tersimpan'],upload:['Upload Dokumentasi','Simpan dokumentasi baru ke Google Drive']};
+function go(p){page=p;Object.keys(titles).forEach(k=>$('page-'+k).classList.toggle('hidden',k!==p));
+  document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('on',b.dataset.page===p));
+  $('pageTitle').textContent=titles[p][0];$('pageSub').textContent=titles[p][1];scrollTo(0,0);
+  if(p==='dashboard')loadDash();if(p==='archive')loadList()}
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>go(b.dataset.page));
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+
+function setStatus(ok,txt){const s=$('status');s.className='status '+(ok?'ok':'bad');s.lastChild.textContent=txt}
+function showErr(e,retry){setStatus(false,'Backend bermasalah');$('banner').innerHTML=`<div class="alert" style="margin-bottom:18px">${ic('warn')}<div><b>Data belum bisa dimuat</b>${esc(e.message)}</div><button class="btn sm ghost" id="retry">Coba lagi</button></div>`;$('retry').onclick=()=>{$('banner').innerHTML='';retry()}}
+function ok(){$('banner').innerHTML='';setStatus(true,'Terhubung ke Google Drive')}
+
+const skel='<div class="sk"></div>'.repeat(4);
+function rows(docs){
+  if(!docs.length)return `<div class="empty">${ic('folder')}<b>Belum ada dokumentasi</b>Upload file pertama atau ubah kata kunci pencarian.</div>`;
+  return docs.map(d=>{const[k,c]=kind(d.mimeType);return `<div class="row"><div class="ico" style="--c:${c}">${ic(k)}</div>
+  <div style="min-width:0"><div class="t">${esc(d.title)}</div><div class="m">${dt(d.eventDate)} · ${esc(d.fileName)} · ${size(d.size)}</div></div>
+  <span class="chip" style="--c:var(--c-${esc(d.category)},#64748b)">${esc(d.category)}</span>
+  <button class="btn soft sm" data-dl="${esc(d.id)}">${ic('download')}<span>Unduh</span></button></div>`}).join('');
+}
+function bindDl(host){host.querySelectorAll('[data-dl]').forEach(b=>b.onclick=()=>download(b))}
+async function loadDash(){
+  $('recent').innerHTML=skel;
+  try{const d=await api('getDashboard','');ok();
+    $('sTotal').textContent=d.total;$('sPhotos').textContent=d.photos;$('sVideos').textContent=d.videos;$('sReports').textContent=d.reports;
+    $('recent').innerHTML=rows(d.recent);bindDl($('recent'));
+    const max=Math.max(1,...CATS.map(c=>d.byCategory[c]||0));
+    $('cats').innerHTML=CATS.map(c=>`<div class="bar" style="--c:var(--c-${c})"><b><span>${c}</span><span>${d.byCategory[c]||0}</span></b><i><s style="width:${(d.byCategory[c]||0)/max*100}%"></s></i></div>`).join('');
+  }catch(e){$('recent').innerHTML='';showErr(e,loadDash)}
+}
+async function loadList(){
+  $('list').innerHTML=skel;
+  try{const docs=await api('listDocuments','',{query:$('q').value,category:$('fc').value,startDate:$('fs').value,endDate:$('fe').value});ok();$('list').innerHTML=rows(docs);bindDl($('list'))}
+  catch(e){$('list').innerHTML='';showErr(e,loadList)}
+}
+$('fb').onclick=loadList;$('q').onkeydown=e=>{if(e.key==='Enter')loadList()};
+async function download(btn){
+  const old=btn.innerHTML;btn.disabled=true;btn.textContent='Menyiapkan…';
+  try{const d=await api('downloadDocument','',btn.dataset.dl);
+    const bin=atob(d.base64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+    const url=URL.createObjectURL(new Blob([u],{type:d.mimeType}));const a=document.createElement('a');a.href=url;a.download=d.fileName;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);toast('Unduhan dimulai.')}
+  catch(e){toast(e.message,'err')}finally{btn.disabled=false;btn.innerHTML=old}
+}
+
+/* Upload */
+const fileEl=$('file'),drop=$('drop');let pvUrl='';
+function resetPrev(){if(pvUrl)URL.revokeObjectURL(pvUrl);pvUrl='';$('prev').classList.remove('on');$('dropIdle').classList.remove('hidden');$('prevMedia').innerHTML=''}
+function pick(f){
+  if(!f){resetPrev();return}
+  if(f.size>MAX){toast(`Ukuran file ${size(f.size)} melebihi batas 3 MB. Kompres atau pilih file lain.`,'err');fileEl.value='';resetPrev();return}
+  resetPrev();pvUrl=URL.createObjectURL(f);const[k,c]=kind(f.type);
+  $('prevMedia').innerHTML=k==='image'?`<img src="${pvUrl}" alt="Pratinjau">`:k==='video'?`<video src="${pvUrl}" muted controls playsinline></video>`:'';
+  $('fiIco').style.setProperty('--c',c);$('fiIco').innerHTML=ic(k);$('fiName').textContent=f.name;$('fiSize').textContent=size(f.size);
+  $('dropIdle').classList.add('hidden');$('prev').classList.add('on');
+  $('cat').value=k==='image'?'Foto':k==='video'?'Video':/pdf|word|sheet|presentation|text/.test(f.type)||/\.(docx?|xlsx?|pptx?|pdf|txt)$/i.test(f.name)?'Laporan':'Lainnya';
+  if(!$('title').value)$('title').value=f.name.replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ');
+}
+fileEl.onchange=()=>pick(fileEl.files[0]);
+['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(e=>drop.addEventListener(e,()=>drop.classList.remove('over')));
+drop.addEventListener('drop',ev=>{ev.preventDefault();if(ev.dataTransfer.files[0]){fileEl.files=ev.dataTransfer.files;pick(fileEl.files[0])}});
+$('form').onreset=()=>{resetPrev()};
+$('form').onsubmit=async e=>{
+  e.preventDefault();const f=fileEl.files[0];
+  if(!f)return toast('Pilih file terlebih dahulu.','err');
+  const btn=$('send'),lbl=btn.querySelector('.lbl');btn.disabled=true;lbl.textContent='Mengunggah…';$('pbar').classList.add('on');
+  try{
+    const base64=await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]||'');r.onerror=()=>no(new Error('File tidak dapat dibaca.'));r.readAsDataURL(f)});
+    await api('uploadDocument','',{title:$('title').value,category:$('cat').value,eventDate:$('date').value,description:$('desc').value,fileName:f.name,mimeType:f.type||'application/octet-stream',base64});
+    $('form').reset();toast('Dokumentasi berhasil diunggah ke Google Drive.');go('archive');
+  }catch(err){toast(err.message,'err')}
+  finally{btn.disabled=false;lbl.textContent='Upload dokumentasi';$('pbar').classList.remove('on')}
+};
+$('date').valueAsDate=new Date();
+fill();go('dashboard');
 </script>
 </body>
 </html>

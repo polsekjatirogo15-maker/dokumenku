@@ -4,8 +4,9 @@ Pengembang: masluki.id
 
 ISI PAKET
 - index.html       Frontend dashboard yang berjalan di Vercel
-- api/gas.js       Proxy API Vercel ke Google Apps Script
-- Code.gs          Backend Apps Script (Drive + Sheets + login)
+- api/gas.js       Proxy API Vercel ke Google Apps Script (HARUS di dalam folder api/)
+- vercel.json      Batas waktu fungsi 30 detik untuk upload
+- Code.gs          Backend Apps Script (Drive + Sheets)
 
 BAGIAN A — PASANG BACKEND GOOGLE APPS SCRIPT
 1. Buka https://script.google.com/ dan buka/buat project FOTOKU.
@@ -38,3 +39,10 @@ PENTING
 - Upload dibatasi 3 MB per file agar permintaan base64 tidak melewati batas payload Vercel Functions.
 - Endpoint Apps Script disetel dapat diakses publik agar proxy server Vercel dapat memanggilnya; akun dan data tetap dilindungi token login aplikasi. Untuk lingkungan resmi, gunakan pengamanan tambahan dan uji akses sebelum data produksi.
 - Jangan membagikan username/password admin, URL database Sheet, atau token sesi.
+
+
+CEK CEPAT JIKA ADA ERROR
+- Buka https://DOMAIN-ANDA.vercel.app/api/gas di browser. Harus tampil {"ok":true,"proxy":"aktif","gasUrlTerpasang":true}.
+  Jika 404 -> file api/gas.js belum ada di repo (penyebab error 'Respons backend tidak valid').
+  Jika gasUrlTerpasang false -> isi GAS_WEB_APP_URL di Vercel lalu Redeploy.
+- Setelah mengubah Code.gs, buat Deploy > Manage deployments > Edit > New version agar perubahan aktif.
