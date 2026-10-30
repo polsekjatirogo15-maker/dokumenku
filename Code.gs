@@ -16,7 +16,7 @@
 
 const APP_NAME = 'FOTOKU';
 const INITIAL_ADMIN_USERNAME = 'admin';
-const INITIAL_ADMIN_PASSWORD = 'admin';
+const INITIAL_ADMIN_PASSWORD = 'admin12345678';
 const MAX_FILE_BYTES = 3 * 1024 * 1024; // Vercel serverless request limit; keep base64 payload safely below 4.5 MB
 const SESSION_SECONDS = 21600; // 6 jam
 const PROP_FOLDER_ID = 'FOTOKU_FOLDER_ID';
