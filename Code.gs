@@ -25,7 +25,7 @@ const CONFIGURED_ROOT_FOLDER_ID = '1AMURiORmpzbNt8MFev2Nkuj6LHiy5xRO';
 const PROP_SHEET_ID = 'FOTOKU_SHEET_ID';
 // KODE RAHASIA: ganti dengan kode pilihan Anda (min. 8 karakter), lalu isi kode yang sama di menu Database pada website.
 // Alternatif: simpan di Project Settings > Script Properties dengan nama FOTOKU_SECRET.
-const SECRET_CODE = 'GANTI_KODE_RAHASIA';
+const SECRET_CODE = 'polsek123';
 
 function doGet() {
   // Cek kesehatan backend (frontend ada di Vercel, jadi tidak ada file HTML di project ini).
