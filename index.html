@@ -207,14 +207,15 @@ async function call(cfg,fn,args){
   if(!cfg.url||!cfg.secret){const e=new Error('Database belum dihubungkan. Isi link Google Script dan kode rahasia di menu Database.');e.code='NOCFG';throw e}
   const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),90000);
   let res,text;
-  try{res=await fetch('/api/gas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fn,args,secret:cfg.secret,gasUrl:cfg.url}),signal:ctl.signal});text=await res.text()}
-  catch(e){throw new Error(e.name==='AbortError'?'Server terlalu lama merespons. Coba lagi sebentar lagi.':'Tidak ada koneksi internet atau server tidak dapat dijangkau.')}
+  try{
+    // Panggilan langsung ke Apps Script. text/plain menghindari preflight CORS.
+    res=await fetch(cfg.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn,args,secret:cfg.secret}),redirect:'follow',signal:ctl.signal});
+    text=await res.text();
+  }catch(e){throw new Error(e.name==='AbortError'?'Google Script terlalu lama merespons. Coba lagi sebentar lagi.':'Tidak dapat menghubungi Google Script. Periksa koneksi internet, dan pastikan Web App di-deploy dengan akses "Anyone" serta link /exec benar.')}
   finally{clearTimeout(timer)}
   let j;try{j=JSON.parse(text)}catch(_){
-    if(res.status===404)throw new Error('Endpoint /api/gas tidak ditemukan. Pastikan file api/gas.js ada di repositori GitHub, lalu redeploy di Vercel.');
-    if(res.status===413)throw new Error('File terlalu besar untuk dikirim. Gunakan file di bawah 3 MB.');
-    throw new Error(`Server mengembalikan jawaban tidak valid (kode ${res.status}). Cek Logs di Vercel.`)}
-  if(!res.ok||!j.ok)throw new Error(j.error||'Permintaan gagal.');
+    throw new Error(/accounts\.google|sign.?in|masuk/i.test(text)?'Google Script meminta login. Deploy ulang Web App dengan "Who has access: Anyone".':'Google Script tidak mengembalikan data yang valid. Pastikan link /exec benar dan Code.gs terbaru sudah di-deploy sebagai versi baru.')}
+  if(!j.ok)throw new Error(j.error||'Permintaan gagal.');
   return j.data;
 }
 
