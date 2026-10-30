@@ -217,11 +217,11 @@ function uploadDocument(token, payload) {
   if (!title) throw new Error('Judul dokumentasi wajib diisi.');
   if (!base64) throw new Error('Pilih file yang akan diunggah.');
   const estimatedBytes = Math.floor(base64.length * 3 / 4);
-  if (estimatedBytes > MAX_FILE_BYTES) throw new Error('Ukuran file melebihi batas 8 MB.');
+  if (estimatedBytes > MAX_FILE_BYTES) throw new Error('Ukuran file melebihi batas 3 MB.');
   if (!['Kegiatan', 'Foto', 'Video', 'Laporan', 'Lainnya'].includes(category)) throw new Error('Kategori tidak valid.');
 
   const bytes = Utilities.base64Decode(base64);
-  if (bytes.length > MAX_FILE_BYTES) throw new Error('Ukuran file melebihi batas 8 MB.');
+  if (bytes.length > MAX_FILE_BYTES) throw new Error('Ukuran file melebihi batas 3 MB.');
   const blob = Utilities.newBlob(bytes, mimeType, fileName);
   const folder = getCategoryFolder_(category);
   const file = folder.createFile(blob);
@@ -314,10 +314,13 @@ function getCategoryFolder_(category) {
 }
 
 function requireSession_(token) {
-  if (!token) throw new Error('Sesi berakhir. Silakan login kembali.');
-  const raw = CacheService.getScriptCache().get('session_' + String(token));
-  if (!raw) throw new Error('Sesi berakhir. Silakan login kembali.');
-  return JSON.parse(raw);
+  // MODE TANPA LOGIN: endpoint publik. Semua pengunjung dapat melihat, mengunggah, dan mengunduh dokumentasi.
+  // Hak hapus dan kelola akun tetap ditolak karena role pengunjung bukan admin.
+  if (token) {
+    const raw = CacheService.getScriptCache().get('session_' + String(token));
+    if (raw) return JSON.parse(raw);
+  }
+  return { username: 'Akses Umum', role: 'petugas', issued: Date.now() };
 }
 
 function getSheet_(name) {
