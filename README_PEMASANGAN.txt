@@ -46,3 +46,8 @@ CEK CEPAT JIKA ADA ERROR
   Jika 404 -> file api/gas.js belum ada di repo (penyebab error 'Respons backend tidak valid').
   Jika gasUrlTerpasang false -> isi GAS_WEB_APP_URL di Vercel lalu Redeploy.
 - Setelah mengubah Code.gs, buat Deploy > Manage deployments > Edit > New version agar perubahan aktif.
+
+MENU DATABASE (BARU)
+- Di website, buka menu Database, isi Link Google Script (/exec) dan Kode rahasia, klik Tes koneksi lalu Simpan.
+- Kode rahasia = nilai SECRET_CODE di Code.gs (min. 8 karakter). Tanpa kode yang benar, backend menolak semua permintaan.
+- Pengaturan disimpan di browser (localStorage) per perangkat. GAS_WEB_APP_URL di Vercel hanya menjadi cadangan.

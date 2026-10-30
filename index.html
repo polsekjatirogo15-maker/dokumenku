@@ -69,13 +69,15 @@ label{display:block;font-weight:700;font-size:13px;margin-bottom:6px;color:#3442
 #toasts{position:fixed;right:20px;bottom:20px;display:grid;gap:10px;z-index:50}
 .toast{display:flex;gap:10px;align-items:flex-start;max-width:380px;padding:14px 16px;border-radius:14px;background:var(--navy);color:#fff;box-shadow:0 14px 36px #0c1a3a40;animation:in .25s}.toast.err{background:#9b1c1c}.toast.ok svg{color:#6ee7a8}
 @keyframes in{from{transform:translateY(12px);opacity:0}}
+.set{max-width:760px}.set .fields{gap:18px}.hint{color:var(--mute);font-size:12.5px;margin-top:6px}.pw{position:relative}.pw input{padding-right:70px}.pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;color:var(--blue);padding:8px 10px;font-weight:700;font-size:12.5px}
+.res{margin-top:16px}.alert.good{background:#ecfdf3;border-color:#b5e8c8;color:#14532d}.steps{margin:0;padding-left:20px;color:#34425c}.steps li{margin:7px 0}.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
 .tabs{display:none}
 @media(max-width:1020px){.stats{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters input:first-child{grid-column:1/-1}.up{grid-template-columns:1fr}}
 @media(max-width:760px){
 .layout{display:block}aside{display:none}.top{height:64px;padding:0 16px}.status span{display:none}.wrap{padding:18px 14px 110px}
 .hero{padding:24px 20px;flex-direction:column;align-items:flex-start}.row{grid-template-columns:auto 1fr auto}.row .chip{display:none}
 .two{grid-template-columns:1fr}#toasts{left:14px;right:14px;bottom:88px}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:9;background:var(--navy);border-radius:20px;padding:6px;box-shadow:0 12px 30px #0c1a3a55}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:9;background:var(--navy);border-radius:20px;padding:6px;box-shadow:0 12px 30px #0c1a3a55}
 .tabs button{background:none;color:#9fb2d8;display:grid;justify-items:center;gap:2px;padding:8px;border-radius:14px;font-size:11.5px;font-weight:700}.tabs button.on{background:#ffffff1c;color:#fff}.tabs svg{width:21px;height:21px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -89,6 +91,7 @@ label{display:block;font-weight:700;font-size:13px;margin-bottom:6px;color:#3442
     <button class="on" data-page="dashboard"><span data-ic="grid"></span>Dashboard</button>
     <button data-page="archive"><span data-ic="folder"></span>Arsip Dokumentasi</button>
     <button data-page="upload"><span data-ic="upload"></span>Upload File</button>
+    <button data-page="settings"><span data-ic="db"></span>Database</button>
   </nav>
   <div class="foot">Arsip tersimpan di Google Drive<br>Pengembang <b>masluki.id</b></div>
 </aside>
@@ -150,10 +153,25 @@ label{display:block;font-weight:700;font-size:13px;margin-bottom:6px;color:#3442
         <div class="submit"><button type="reset" class="btn ghost">Kosongkan</button><button class="btn" id="send" type="submit"><span data-ic="upload"></span><span class="lbl">Upload dokumentasi</span></button></div>
       </form>
     </section>
+
+    <section id="page-settings" class="hidden">
+      <div class="up" style="grid-template-columns:1.2fr 1fr;align-items:start">
+        <form id="cfgForm" class="panel set" autocomplete="off">
+          <div class="fields">
+            <div><label for="cfgUrl">Link Google Script (Web App)</label><input id="cfgUrl" type="url" required placeholder="https://script.google.com/macros/s/…/exec" spellcheck="false"><div class="hint">Salin dari Apps Script: Deploy &gt; Manage deployments. Harus berakhir /exec.</div></div>
+            <div><label for="cfgSecret">Kode rahasia</label><div class="pw"><input id="cfgSecret" type="password" required placeholder="Sama dengan SECRET_CODE di Code.gs" autocomplete="off"><button type="button" id="cfgShow">Lihat</button></div><div class="hint">Disimpan di browser ini saja. Di perangkat lain, isi lagi.</div></div>
+          </div>
+          <div class="btns"><button class="btn" type="submit"><span data-ic="check"></span>Simpan</button><button class="btn soft" type="button" id="cfgTest"><span data-ic="db"></span>Tes koneksi</button><button class="btn ghost" type="button" id="cfgClear">Hapus pengaturan</button></div>
+          <div class="res" id="cfgRes"></div>
+        </form>
+        <div class="panel"><div class="ph"><h3>Cara mengisi</h3></div>
+          <ol class="steps"><li>Di <b>Code.gs</b>, ganti <b>SECRET_CODE</b> dengan kode pilihan Anda (min. 8 karakter), simpan.</li><li>Jalankan <b>setupFOTOKU()</b> sekali.</li><li>Deploy &gt; Manage deployments &gt; Edit &gt; <b>New version</b> &gt; Deploy.</li><li>Tempel link /exec dan kode yang sama di sini, klik <b>Tes koneksi</b>, lalu <b>Simpan</b>.</li></ol></div>
+      </div>
+    </section>
   </div>
 </main>
 </div>
-<div class="tabs"><button class="on" data-page="dashboard"><span data-ic="grid"></span>Beranda</button><button data-page="archive"><span data-ic="folder"></span>Arsip</button><button data-page="upload"><span data-ic="upload"></span>Upload</button></div>
+<div class="tabs"><button class="on" data-page="dashboard"><span data-ic="grid"></span>Beranda</button><button data-page="archive"><span data-ic="folder"></span>Arsip</button><button data-page="upload"><span data-ic="upload"></span>Upload</button><button data-page="settings"><span data-ic="db"></span>Database</button></div>
 <div id="toasts" aria-live="polite"></div>
 
 <script>
@@ -168,7 +186,8 @@ file:'<path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><p
 search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',plus:'<path d="M12 5v14M5 12h14"/>',
 cloud:'<path d="M7 18a4 4 0 0 1-.6-7.96A6 6 0 0 1 18 9.5 4.3 4.3 0 0 1 17.5 18H7z"/><path d="m12 11-2.5 2.5M12 11l2.5 2.5M12 11v6"/>',
 shield:'<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/>',
-check:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',warn:'<path d="M12 4 2.5 20h19z"/><path d="M12 10v4m0 3v.01"/>'};
+check:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',warn:'<path d="M12 4 2.5 20h19z"/><path d="M12 10v4m0 3v.01"/>',
+db:'<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>'};
 const ic=n=>`<svg viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
 const fill=(root=document)=>root.querySelectorAll('[data-ic]').forEach(e=>{if(!e.firstChild)e.innerHTML=ic(e.dataset.ic)});
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -180,10 +199,15 @@ const CATS=['Kegiatan','Foto','Video','Laporan','Lainnya'];
 
 function toast(msg,type='ok'){const t=document.createElement('div');t.className='toast '+type;t.innerHTML=ic(type==='err'?'warn':'check')+`<div>${esc(msg)}</div>`;$('toasts').append(t);setTimeout(()=>t.remove(),type==='err'?7000:4000)}
 
-async function api(fn,...args){
+let CFG={url:'',secret:''};
+try{const c=JSON.parse(localStorage.getItem('fotoku_cfg')||'null');if(c&&c.url)CFG=c}catch(_){}
+const URLRE=/^https:\/\/script\.google\.com\/(a\/macros\/[\w.-]+\/|macros\/)s\/[\w-]+\/exec$/;
+const api=(fn,...args)=>call(CFG,fn,args);
+async function call(cfg,fn,args){
+  if(!cfg.url||!cfg.secret){const e=new Error('Database belum dihubungkan. Isi link Google Script dan kode rahasia di menu Database.');e.code='NOCFG';throw e}
   const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),90000);
   let res,text;
-  try{res=await fetch('/api/gas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fn,args}),signal:ctl.signal});text=await res.text()}
+  try{res=await fetch('/api/gas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fn,args,secret:cfg.secret,gasUrl:cfg.url}),signal:ctl.signal});text=await res.text()}
   catch(e){throw new Error(e.name==='AbortError'?'Server terlalu lama merespons. Coba lagi sebentar lagi.':'Tidak ada koneksi internet atau server tidak dapat dijangkau.')}
   finally{clearTimeout(timer)}
   let j;try{j=JSON.parse(text)}catch(_){
@@ -195,16 +219,16 @@ async function api(fn,...args){
 }
 
 let page='dashboard';
-const titles={dashboard:['Dashboard','Ringkasan dokumentasi kegiatan'],archive:['Arsip Dokumentasi','Cari dan unduh file yang tersimpan'],upload:['Upload Dokumentasi','Simpan dokumentasi baru ke Google Drive']};
+const titles={dashboard:['Dashboard','Ringkasan dokumentasi kegiatan'],archive:['Arsip Dokumentasi','Cari dan unduh file yang tersimpan'],upload:['Upload Dokumentasi','Simpan dokumentasi baru ke Google Drive'],settings:['Database','Hubungkan ke Google Script dan Google Drive']};
 function go(p){page=p;Object.keys(titles).forEach(k=>$('page-'+k).classList.toggle('hidden',k!==p));
   document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('on',b.dataset.page===p));
   $('pageTitle').textContent=titles[p][0];$('pageSub').textContent=titles[p][1];scrollTo(0,0);
-  if(p==='dashboard')loadDash();if(p==='archive')loadList()}
+  if(p==='settings'){$('banner').innerHTML='';loadCfgForm()}if(p==='dashboard')loadDash();if(p==='archive')loadList()}
 document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>go(b.dataset.page));
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
 
 function setStatus(ok,txt){const s=$('status');s.className='status '+(ok?'ok':'bad');s.lastChild.textContent=txt}
-function showErr(e,retry){setStatus(false,'Backend bermasalah');$('banner').innerHTML=`<div class="alert" style="margin-bottom:18px">${ic('warn')}<div><b>Data belum bisa dimuat</b>${esc(e.message)}</div><button class="btn sm ghost" id="retry">Coba lagi</button></div>`;$('retry').onclick=()=>{$('banner').innerHTML='';retry()}}
+function showErr(e,retry){const nc=e.code==='NOCFG';setStatus(false,nc?'Belum terhubung':'Backend bermasalah');$('banner').innerHTML=`<div class="alert" style="margin-bottom:18px">${ic('warn')}<div><b>${nc?'Database belum dihubungkan':'Data belum bisa dimuat'}</b>${esc(e.message)}</div><button class="btn sm ghost" id="retry">${nc?'Buka menu Database':'Coba lagi'}</button></div>`;$('retry').onclick=()=>{$('banner').innerHTML='';nc?go('settings'):retry()}}
 function ok(){$('banner').innerHTML='';setStatus(true,'Terhubung ke Google Drive')}
 
 const skel='<div class="sk"></div>'.repeat(4);
@@ -269,7 +293,22 @@ $('form').onsubmit=async e=>{
   finally{btn.disabled=false;lbl.textContent='Upload dokumentasi';$('pbar').classList.remove('on')}
 };
 $('date').valueAsDate=new Date();
-fill();go('dashboard');
+/* Menu Database */
+function loadCfgForm(){$('cfgUrl').value=CFG.url||'';$('cfgSecret').value=CFG.secret||'';$('cfgRes').innerHTML=''}
+function readCfg(){const url=$('cfgUrl').value.trim(),secret=$('cfgSecret').value.trim();
+  if(!URLRE.test(url))throw new Error('Link harus berbentuk https://script.google.com/macros/s/…/exec.');
+  if(!secret)throw new Error('Kode rahasia wajib diisi.');return{url,secret}}
+function res(good,title,msg){$('cfgRes').innerHTML=`<div class="alert ${good?'good':''}">${ic(good?'check':'warn')}<div><b>${esc(title)}</b>${esc(msg)}</div></div>`}
+$('cfgShow').onclick=()=>{const i=$('cfgSecret'),h=i.type==='password';i.type=h?'text':'password';$('cfgShow').textContent=h?'Sembunyi':'Lihat'};
+$('cfgTest').onclick=async()=>{const b=$('cfgTest');try{const c=readCfg();b.disabled=true;res(true,'Memeriksa…','Menghubungi Google Script.');
+  const info=await call(c,'getAppInfo',[]);
+  info.configured?res(true,'Terhubung','Kode rahasia benar dan database Google Drive siap dipakai.'):res(false,'Terhubung, tapi belum siap','Jalankan setupFOTOKU() sekali di editor Apps Script, lalu deploy versi baru.')}
+  catch(e){res(false,'Koneksi gagal',e.message)}finally{b.disabled=false}};
+$('cfgForm').onsubmit=e=>{e.preventDefault();try{CFG=readCfg()}catch(err){return res(false,'Pengaturan belum valid',err.message)}
+  let saved=true;try{localStorage.setItem('fotoku_cfg',JSON.stringify(CFG))}catch(_){saved=false}
+  toast(saved?'Pengaturan database disimpan.':'Tersimpan sementara; browser menolak penyimpanan permanen.');go('dashboard')};
+$('cfgClear').onclick=()=>{CFG={url:'',secret:''};try{localStorage.removeItem('fotoku_cfg')}catch(_){}loadCfgForm();setStatus(false,'Belum terhubung');res(false,'Pengaturan dihapus','Isi link dan kode rahasia lagi untuk memakai aplikasi.')};
+fill();if(!CFG.url)setStatus(false,'Belum terhubung');go(CFG.url?'dashboard':'settings');
 </script>
 </body>
 </html>

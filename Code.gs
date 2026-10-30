@@ -16,13 +16,16 @@
 
 const APP_NAME = 'FOTOKU';
 const INITIAL_ADMIN_USERNAME = 'admin';
-const INITIAL_ADMIN_PASSWORD = 'admin12345678';
+const INITIAL_ADMIN_PASSWORD = 'admin';
 const MAX_FILE_BYTES = 3 * 1024 * 1024; // Vercel serverless request limit; keep base64 payload safely below 4.5 MB
 const SESSION_SECONDS = 21600; // 6 jam
 const PROP_FOLDER_ID = 'FOTOKU_FOLDER_ID';
 // Folder Drive tujuan yang diberikan pengguna. Akun pemilik script harus punya akses.
 const CONFIGURED_ROOT_FOLDER_ID = '1AMURiORmpzbNt8MFev2Nkuj6LHiy5xRO';
 const PROP_SHEET_ID = 'FOTOKU_SHEET_ID';
+// KODE RAHASIA: ganti dengan kode pilihan Anda (min. 8 karakter), lalu isi kode yang sama di menu Database pada website.
+// Alternatif: simpan di Project Settings > Script Properties dengan nama FOTOKU_SECRET.
+const SECRET_CODE = 'GANTI_KODE_RAHASIA';
 
 function doGet() {
   // Cek kesehatan backend (frontend ada di Vercel, jadi tidak ada file HTML di project ini).
@@ -39,6 +42,9 @@ function doGet() {
 function doPost(e) {
   try {
     const body = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    const expected = getSecretCode_();
+    if (!expected) throw new Error('Kode rahasia belum diatur di Code.gs (SECRET_CODE). Ganti, simpan, lalu deploy versi baru.');
+    if (!constantTimeEqual_(String(body.secret || ''), expected)) throw new Error('Kode rahasia salah.');
     const fn = String(body.fn || '');
     const args = Array.isArray(body.args) ? body.args : [];
     const handlers = {
@@ -403,4 +409,9 @@ function constantTimeEqual_(a, b) {
   let result = 0;
   for (let i = 0; i < a.length; i++) result |= a.charCodeAt(i) ^ b.charCodeAt(i);
   return result === 0;
+}
+
+function getSecretCode_() {
+  const v = String(PropertiesService.getScriptProperties().getProperty('FOTOKU_SECRET') || SECRET_CODE || '');
+  return (v.length >= 8 && v.indexOf('GANTI_') !== 0) ? v : '';
 }
