@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root{--navy:#172554;--blue:#2563eb;--bg:#f4f7fb;--text:#172033;--muted:#68758a;--line:#e5eaf2;--white:#fff;--red:#dc2626}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);font-size:14px}
+    button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;font-weight:650}
+    .btn{background:var(--blue);color:#fff}.btn.secondary{background:#eaf0ff;color:#1d4ed8}.btn.ghost{background:#f1f5f9;color:#334155}.btn.danger{background:#fee2e2;color:#b91c1c}
+    .hidden{display:none!important}.layout{min-height:100vh;display:grid;grid-template-columns:240px 1fr}
+    aside{background:var(--navy);color:white;padding:22px 14px;display:flex;flex-direction:column;gap:22px}
+    .brand{display:flex;align-items:center;gap:12px;padding:4px 8px}.brand-icon{width:42px;height:42px;border-radius:13px;background:#ffffff20;display:grid;place-items:center;font-size:22px}
+    .brand strong{font-size:20px;letter-spacing:1px}.brand small{display:block;color:#cbd5e1;margin-top:3px}
+    .nav-label{font-size:10px;letter-spacing:1.5px;color:#94a3b8;padding:0 10px}
+    .nav{display:grid;gap:6px}.nav button{display:flex;align-items:center;gap:12px;text-align:left;background:transparent;color:#dbeafe;padding:12px;border-radius:10px;font-weight:550}
+    .nav button.active,.nav button:hover{background:#ffffff18;color:#fff}.nav .ico{width:20px;text-align:center;font-size:17px}
+    .side-foot{margin-top:auto;padding:12px;color:#cbd5e1;font-size:12px;line-height:1.6;border-top:1px solid #ffffff20}
+    main{min-width:0}.topbar{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;gap:12px}
+    .topbar h1{font-size:20px;margin:0}.topbar p{margin:4px 0 0;color:var(--muted);font-size:12px}.user-pill{display:flex;align-items:center;gap:10px;color:#334155;font-weight:650}
+    .avatar{width:36px;height:36px;background:#dbeafe;color:#1d4ed8;border-radius:50%;display:grid;place-items:center}
+    .content{padding:26px 30px;max-width:1500px;margin:auto}.welcome{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}
+    .welcome h2{font-size:22px;margin:0 0 6px}.welcome p{margin:0;color:var(--muted)}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:22px}.stat,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 2px 8px #0f172a05}
+    .stat-head{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}.stat-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:11px;background:#eff6ff;font-size:18px}
+    .stat strong{font-size:27px;display:block;margin-top:13px}.stat small{color:var(--muted)}.panel{margin-bottom:20px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.panel-head h3{margin:0;font-size:16px}
+    .filters{display:grid;grid-template-columns:minmax(160px,1fr) 170px 150px 150px auto;gap:9px;margin-bottom:15px}
+    input,select,textarea{width:100%;border:1px solid #dbe2ec;border-radius:10px;padding:10px 11px;background:white;color:var(--text);outline:none}
+    input:focus,select:focus,textarea:focus{border-color:#60a5fa;box-shadow:0 0 0 3px #dbeafe}label{display:block;font-size:12px;font-weight:650;color:#475569;margin-bottom:6px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field.full{grid-column:1/-1}.field textarea{min-height:95px;resize:vertical}
+    .upload-box{border:1.5px dashed #b8c7dc;background:#f8fbff;border-radius:14px;padding:20px;text-align:center}.upload-box input{border:0;background:transparent}
+    .table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid #edf0f5}th{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#64748b;background:#fafbfd}td{font-size:13px}td .filetitle{font-weight:700;white-space:normal;min-width:150px}td .sub{color:var(--muted);font-size:11px;margin-top:4px;white-space:normal}
+    .tag{display:inline-block;background:#eef2ff;color:#4338ca;padding:5px 8px;border-radius:7px;font-size:11px}.actions{display:flex;gap:6px}.actions button{padding:7px 9px;font-size:12px}
+    .empty{text-align:center;color:var(--muted);padding:34px}.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(140deg,#172554,#1d4ed8)}
+    .login-card{width:min(420px,100%);background:#fff;padding:30px;border-radius:22px;box-shadow:0 24px 80px #0003}.login-brand{display:flex;align-items:center;gap:12px;margin-bottom:25px}.login-brand .brand-icon{background:#dbeafe;color:#1d4ed8}
+    .login-card h1{margin:0 0 8px;font-size:24px}.login-card p{color:var(--muted);line-height:1.5}.login-card .field{margin:16px 0}.login-card .btn{width:100%;padding:12px}
+    .notice{border-radius:10px;padding:11px 12px;margin:12px 0;font-size:13px}.notice.error{background:#fee2e2;color:#991b1b}.notice.ok{background:#dcfce7;color:#166534}.notice.info{background:#eff6ff;color:#1e40af}
+    .loading{opacity:.65;pointer-events:none}.toast{position:fixed;right:20px;bottom:20px;max-width:360px;padding:14px 18px;border-radius:12px;background:#0f172a;color:#fff;box-shadow:0 8px 30px #0002;z-index:20}
+    .modal-backdrop{position:fixed;inset:0;background:#0f172a88;display:grid;place-items:center;padding:18px;z-index:10}.modal{background:#fff;border-radius:18px;padding:22px;width:min(650px,100%);max-height:90vh;overflow:auto}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal-head h3{margin:0}.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+    .user-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);gap:12px}
+    @media(max-width:1050px){.layout{grid-template-columns:200px 1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.filters{grid-template-columns:1fr 1fr}.filters .search{grid-column:1/-1}}
+    @media(max-width:720px){.layout{display:block}aside{padding:12px;gap:12px}.brand{padding:2px}.nav-label,.side-foot{display:none}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:9px 11px}.topbar{height:64px;padding:0 16px}.content{padding:18px 14px}.welcome{align-items:flex-start;flex-direction:column}.stats{gap:9px}.stat{padding:13px}.stat strong{font-size:23px}.filters{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.user-pill span{display:none}}
+  </style>
+</head>
+<body>
+  <div id="loginScreen" class="login-wrap">
+    <div class="login-card">
+      <div class="login-brand"><div class="brand-icon">📷</div><div><strong style="font-size:20px;letter-spacing:1px">FOTOKU</strong><small style="display:block;color:#64748b;margin-top:3px">Pusat Dokumentasi Digital</small></div></div>
+      <h1>Selamat datang</h1><p>Masuk menggunakan akun petugas yang telah dibuat oleh administrator.</p>
+      <div id="loginError"></div>
+      <form id="loginForm">
+        <div class="field"><label for="loginUser">Username</label><input id="loginUser" autocomplete="username" required placeholder="Masukkan username"></div>
+        <div class="field"><label for="loginPass">Password</label><input id="loginPass" type="password" autocomplete="current-password" required placeholder="Masukkan password"></div>
+        <button class="btn" id="loginBtn" type="submit">Masuk ke FOTOKU</button>
+      </form>
+      <div id="setupHint" class="notice info hidden">Aplikasi belum disiapkan. Jalankan <b>setupFOTOKU()</b> dari editor Apps Script terlebih dahulu.</div>
+      <p style="font-size:11px;margin-top:22px">Akses hanya untuk petugas yang terdaftar.</p>
+    </div>
+  </div>
+
+  <div id="appScreen" class="layout hidden">
+    <aside>
+      <div class="brand"><div class="brand-icon">📷</div><div><strong>FOTOKU</strong><small>Dokumentasi Digital</small></div></div>
+      <div class="nav-label">MENU UTAMA</div>
+      <nav class="nav">
+        <button class="active" data-page="dashboard"><span class="ico">▦</span>Dashboard</button>
+        <button data-page="archive"><span class="ico">▤</span>Arsip Dokumentasi</button>
+        <button data-page="upload"><span class="ico">⇧</span>Upload File</button>
+        <button id="usersNav" data-page="users" class="hidden"><span class="ico">♙</span>Kelola Petugas</button>
+      </nav>
+      <div class="side-foot">FOTOKU · Arsip kegiatan terpusat<br>File tersimpan di Google Drive.</div>
+    </aside>
+    <main>
+      <header class="topbar"><div><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Ringkasan dokumentasi kegiatan</p></div><div class="user-pill"><div class="avatar" id="avatar">P</div><span id="userLabel">Petugas</span><button class="btn ghost" id="logoutBtn">Keluar</button></div></header>
+      <div class="content">
+        <section id="page-dashboard">
+          <div class="welcome"><div><h2>Halo, <span id="welcomeName">Petugas</span> 👋</h2><p>Kelola semua foto, video, dan laporan dokumentasi di sini.</p></div><button class="btn" onclick="showPage('upload')">＋ Upload Dokumentasi</button></div>
+          <div class="stats">
+            <div class="stat"><div class="stat-head">Total dokumentasi <span class="stat-icon">▤</span></div><strong id="statTotal">0</strong><small>Arsip aktif</small></div>
+            <div class="stat"><div class="stat-head">Foto <span class="stat-icon">▧</span></div><strong id="statPhotos">0</strong><small>File gambar</small></div>
+            <div class="stat"><div class="stat-head">Video <span class="stat-icon">▷</span></div><strong id="statVideos">0</strong><small>File video</small></div>
+            <div class="stat"><div class="stat-head">Laporan <span class="stat-icon">▤</span></div><strong id="statReports">0</strong><small>PDF dan dokumen</small></div>
+          </div>
+          <div class="panel"><div class="panel-head"><h3>Dokumentasi terbaru</h3><button class="btn secondary" onclick="showPage('archive')">Lihat semua</button></div><div id="recentTable"></div></div>
+        </section>
+
+        <section id="page-archive" class="hidden">
+          <div class="welcome"><div><h2>Arsip Dokumentasi</h2><p>Cari dan unduh file yang telah tersimpan.</p></div><button class="btn" onclick="showPage('upload')">＋ Upload File</button></div>
+          <div class="panel">
+            <div class="filters">
+              <input class="search" id="searchQuery" placeholder="Cari judul, nama file, keterangan...">
+              <select id="filterCategory"><option value="">Semua kategori</option><option>Kegiatan</option><option>Foto</option><option>Video</option><option>Laporan</option><option>Lainnya</option></select>
+              <input id="filterStart" type="date" title="Dari tanggal">
+              <input id="filterEnd" type="date" title="Sampai tanggal">
+              <button class="btn secondary" id="filterBtn">Cari</button>
+            </div>
+            <div id="archiveTable"></div>
+          </div>
+        </section>
+
+        <section id="page-upload" class="hidden">
+          <div class="welcome"><div><h2>Upload Dokumentasi</h2><p>Tambahkan foto, video, laporan, atau dokumen kegiatan.</p></div></div>
+          <div class="panel">
+            <form id="uploadForm">
+              <div class="form-grid">
+                <div class="field"><label for="docTitle">Judul dokumentasi *</label><input id="docTitle" required maxlength="150" placeholder="Contoh: Dokumentasi kegiatan apel pagi"></div>
+                <div class="field"><label for="docCategory">Kategori *</label><select id="docCategory" required><option>Kegiatan</option><option>Foto</option><option>Video</option><option>Laporan</option><option>Lainnya</option></select></div>
+                <div class="field"><label for="eventDate">Tanggal kegiatan</label><input id="eventDate" type="date"></div>
+                <div class="field"><label for="docFile">Pilih file * (maksimal 8 MB)</label><input id="docFile" type="file" required accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip"></div>
+                <div class="field full"><label for="docDescription">Keterangan</label><textarea id="docDescription" maxlength="1000" placeholder="Lokasi, nama kegiatan, petugas, atau catatan lainnya..."></textarea></div>
+                <div class="field full"><div class="upload-box"><div style="font-size:30px">☁️</div><strong>File akan disimpan ke Google Drive</strong><p id="fileInfo" style="color:#64748b;margin-bottom:0">Pilih file dari komputer Anda.</p></div></div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px"><button type="reset" class="btn ghost">Reset</button><button id="uploadBtn" class="btn" type="submit">Upload Dokumentasi</button></div>
+            </form>
+          </div>
+        </section>
+
+        <section id="page-users" class="hidden">
+          <div class="welcome"><div><h2>Kelola Petugas</h2><p>Hanya administrator yang dapat menambah atau menonaktifkan akun.</p></div><button class="btn" id="newUserBtn">＋ Tambah Petugas</button></div>
+          <div class="panel"><div id="usersList"></div></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="modalHost"></div><div id="toastHost"></div>
+<script>
+  let token = sessionStorage.getItem('fotoku_token') || '';
+  let currentUser = null;
+  const $ = id => document.getElementById(id);
+  const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const formatSize = n => n < 1024 ? n+' B' : n < 1048576 ? (n/1024).toFixed(1)+' KB' : (n/1048576).toFixed(2)+' MB';
+  function callServer(fn, ...args) {
+    return new Promise((resolve,reject) => {
+      google.script.run.withSuccessHandler(resolve).withFailureHandler(err => reject(new Error(err && err.message ? err.message : String(err))))[fn](...args);
+    });
+  }
+  function toast(message, error=false) {
+    $('toastHost').innerHTML = `<div class="toast" style="${error?'background:#991b1b':''}">${esc(message)}</div>`;
+    setTimeout(()=>{$('toastHost').innerHTML='';},4000);
+  }
+  function setBusy(button, busy, text) {
+    if (!button) return;
+    if (busy) { button.dataset.oldText = button.textContent; button.textContent = text || 'Memproses...'; button.disabled = true; }
+    else { button.textContent = button.dataset.oldText || button.textContent; button.disabled = false; }
+  }
+  async function boot() {
+    try {
+      const info = await callServer('getAppInfo');
+      if (!info.configured) $('setupHint').classList.remove('hidden');
+    } catch(e) {}
+    if (token) {
+      try { await loadDashboard(); return; } catch(e) { token=''; sessionStorage.removeItem('fotoku_token'); }
+    }
+    $('loginScreen').classList.remove('hidden'); $('appScreen').classList.add('hidden');
+  }
+  $('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = $('loginBtn'); setBusy(btn,true,'Memeriksa...');
+    $('loginError').innerHTML = '';
+    try {
+      const res = await callServer('login',$('loginUser').value,$('loginPass').value);
+      token=res.token; sessionStorage.setItem('fotoku_token',token);
+      currentUser={username:res.username,role:res.role};
+      $('loginPass').value='';
+      await enterApp();
+    } catch(err) { $('loginError').innerHTML=`<div class="notice error">${esc(err.message)}</div>`; }
+    finally { setBusy(btn,false); }
+  });
+  async function enterApp() {
+    $('loginScreen').classList.add('hidden'); $('appScreen').classList.remove('hidden');
+    $('userLabel').textContent=currentUser.username; $('welcomeName').textContent=currentUser.username;
+    $('avatar').textContent=currentUser.username.slice(0,1).toUpperCase();
+    $('usersNav').classList.toggle('hidden',currentUser.role!=='admin');
+    await loadDashboard();
+  }
+  async function loadDashboard() {
+    const d=await callServer('getDashboard',token);
+    currentUser=d.user;
+    $('loginScreen').classList.add('hidden'); $('appScreen').classList.remove('hidden');
+    $('userLabel').textContent=currentUser.username; $('welcomeName').textContent=currentUser.username;
+    $('avatar').textContent=currentUser.username.slice(0,1).toUpperCase();
+    $('usersNav').classList.toggle('hidden',currentUser.role!=='admin');
+    $('statTotal').textContent=d.total; $('statPhotos').textContent=d.photos; $('statVideos').textContent=d.videos; $('statReports').textContent=d.reports;
+    renderTable($('recentTable'),d.recent,false);
+  }
+  const pageInfo={dashboard:['Dashboard','Ringkasan dokumentasi kegiatan'],archive:['Arsip Dokumentasi','Pusat pencarian dan unduhan file'],upload:['Upload Dokumentasi','Simpan dokumentasi baru ke Google Drive'],users:['Kelola Petugas','Atur akun dan akses petugas']};
+  async function showPage(name) {
+    if(name==='users' && currentUser.role!=='admin') return;
+    Object.keys(pageInfo).forEach(p=>$('page-'+p).classList.toggle('hidden',p!==name));
+    document.querySelectorAll('.nav button[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===name));
+    $('pageTitle').textContent=pageInfo[name][0]; $('pageSub').textContent=pageInfo[name][1];
+    if(name==='archive') await loadArchive();
+    if(name==='users') await loadUsers();
+    if(name==='dashboard') await loadDashboard();
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  document.querySelectorAll('.nav button[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+  $('logoutBtn').addEventListener('click',async()=>{
+    try{await callServer('logout',token)}catch(e){}
+    token='';currentUser=null;sessionStorage.removeItem('fotoku_token');
+    $('appScreen').classList.add('hidden');$('loginScreen').classList.remove('hidden');$('loginUser').value='';$('loginPass').value='';
+  });
+  $('filterBtn').addEventListener('click',loadArchive);
+  $('searchQuery').addEventListener('keydown',e=>{if(e.key==='Enter')loadArchive()});
+  async function loadArchive(){
+    const host=$('archiveTable');host.innerHTML='<div class="empty">Memuat arsip...</div>';
+    try{
+      const docs=await callServer('listDocuments',token,{query:$('searchQuery').value,category:$('filterCategory').value,startDate:$('filterStart').value,endDate:$('filterEnd').value});
+      renderTable(host,docs,true);
+    }catch(e){host.innerHTML=`<div class="notice error">${esc(e.message)}</div>`;handleSession(e)}
+  }
+  function renderTable(host,docs,allowDelete){
+    if(!docs||!docs.length){host.innerHTML='<div class="empty">📂<br><br>Belum ada dokumentasi yang cocok.</div>';return}
+    const isAdmin=currentUser&&currentUser.role==='admin';
+    host.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Dokumentasi</th><th>Kategori</th><th>Tanggal kegiatan</th><th>File / Pengunggah</th><th>Aksi</th></tr></thead><tbody>${docs.map(d=>`<tr>
+      <td><div class="filetitle">${esc(d.title)}</div><div class="sub">${esc(d.description||'Tanpa keterangan')}</div></td>
+      <td><span class="tag">${esc(d.category)}</span></td><td>${esc(d.eventDate||'-')}</td>
+      <td><div>${esc(d.fileName)}</div><div class="sub">${formatSize(d.size)} · ${esc(d.uploader)}</div></td>
+      <td><div class="actions"><button class="btn secondary" onclick="downloadFile('${esc(d.id)}')">↓ Unduh</button>${allowDelete&&isAdmin?`<button class="btn danger" onclick="deleteFile('${esc(d.id)}')">Hapus</button>`:''}</div></td>
+    </tr>`).join('')}</tbody></table></div>`;
+  }
+  async function downloadFile(id){
+    try{
+      toast('Menyiapkan unduhan...');
+      const d=await callServer('downloadDocument',token,id);
+      const raw=atob(d.base64);const bytes=new Uint8Array(raw.length);
+      for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
+      const blob=new Blob([bytes],{type:d.mimeType||'application/octet-stream'});
+      const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=d.fileName||'download';document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),30000);toast('Unduhan dimulai.');
+    }catch(e){toast(e.message,true);handleSession(e)}
+  }
+  async function deleteFile(id){
+    if(!confirm('Hapus dokumentasi ini? File akan dipindahkan ke Sampah Google Drive.'))return;
+    try{await callServer('deleteDocument',token,id);toast('Dokumentasi dihapus.');await loadArchive();await refreshStats()}
+    catch(e){toast(e.message,true)}
+  }
+  async function refreshStats(){try{const d=await callServer('getDashboard',token);$('statTotal').textContent=d.total;$('statPhotos').textContent=d.photos;$('statVideos').textContent=d.videos;$('statReports').textContent=d.reports;renderTable($('recentTable'),d.recent,false)}catch(e){}}
+  $('docFile').addEventListener('change',()=>{
+    const f=$('docFile').files[0];$('fileInfo').textContent=f?`${f.name} · ${formatSize(f.size)}`:'Pilih file dari komputer Anda.';
+  });
+  $('uploadForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const file=$('docFile').files[0];if(!file){toast('Pilih file terlebih dahulu.',true);return}
+    if(file.size>8*1024*1024){toast('Ukuran file maksimal 8 MB.',true);return}
+    const btn=$('uploadBtn');setBusy(btn,true,'Mengunggah...');
+    try{
+      const base64=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]||'');reader.onerror=()=>reject(new Error('File tidak dapat dibaca.'));reader.readAsDataURL(file)});
+      await callServer('uploadDocument',token,{title:$('docTitle').value,category:$('docCategory').value,eventDate:$('eventDate').value,description:$('docDescription').value,fileName:file.name,mimeType:file.type||'application/octet-stream',base64});
+      $('uploadForm').reset();$('fileInfo').textContent='Pilih file dari komputer Anda.';toast('Upload berhasil. File tersimpan di Google Drive.');
+      await refreshStats();showPage('archive');
+    }catch(err){toast(err.message,true);handleSession(err)}
+    finally{setBusy(btn,false)}
+  });
+  $('uploadForm').addEventListener('reset',()=>setTimeout(()=>$('fileInfo').textContent='Pilih file dari komputer Anda.',0));
+  $('newUserBtn').addEventListener('click',showUserModal);
+  function showUserModal(){
+    $('modalHost').innerHTML=`<div class="modal-backdrop"><div class="modal"><div class="modal-head"><h3>Tambah akun petugas</h3><button class="btn ghost" onclick="closeModal()">✕</button></div>
+      <form id="newUserForm"><div class="field" style="margin-bottom:13px"><label>Username</label><input id="newUsername" required minlength="3" maxlength="60" pattern="[a-zA-Z0-9._-]+" placeholder="contoh: petugas01"></div>
+      <div class="field" style="margin-bottom:13px"><label>Password (minimal 12 karakter)</label><input id="newPassword" type="password" required minlength="12" autocomplete="new-password"></div>
+      <div class="field"><label>Hak akses</label><select id="newRole"><option value="petugas">Petugas — upload, cari, unduh</option><option value="admin">Admin — termasuk kelola petugas dan hapus</option></select></div>
+      <div id="newUserError"></div><div class="modal-foot"><button type="button" class="btn ghost" onclick="closeModal()">Batal</button><button class="btn" type="submit">Buat akun</button></div></form></div></div>`;
+    $('newUserForm').addEventListener('submit',async e=>{
+      e.preventDefault();try{await callServer('addUser',token,$('newUsername').value,$('newPassword').value,$('newRole').value);closeModal();toast('Akun petugas berhasil dibuat.');loadUsers()}
+      catch(err){$('newUserError').innerHTML=`<div class="notice error">${esc(err.message)}</div>`}
+    });
+  }
+  function closeModal(){$('modalHost').innerHTML=''}
+  async function loadUsers(){
+    const host=$('usersList');host.innerHTML='<div class="empty">Memuat pengguna...</div>';
+    try{const users=await callServer('listUsers',token);host.innerHTML=users.map(u=>`<div class="user-row"><div><strong>${esc(u.username)}</strong><div class="sub">${esc(u.role)} · ${u.active?'Aktif':'Nonaktif'}</div></div><button class="btn ${u.active?'danger':'secondary'}" onclick="toggleUser('${esc(u.username)}',${!u.active})">${u.active?'Nonaktifkan':'Aktifkan'}</button></div>`).join('')||'<div class="empty">Belum ada pengguna.</div>'}
+    catch(e){host.innerHTML=`<div class="notice error">${esc(e.message)}</div>`}
+  }
+  async function toggleUser(username,active){
+    if(!confirm((active?'Aktifkan':'Nonaktifkan')+' akun '+username+'?'))return;
+    try{await callServer('setUserActive',token,username,active);toast('Status akun diperbarui.');loadUsers()}catch(e){toast(e.message,true)}
+  }
+  function handleSession(e){
+    if(/sesi berakhir|login kembali/i.test(e.message||'')){token='';sessionStorage.removeItem('fotoku_token');$('appScreen').classList.add('hidden');$('loginScreen').classList.remove('hidden');$('loginError').innerHTML='<div class="notice error">Sesi berakhir. Silakan login kembali.</div>'}
+  }
+  boot();
+</script>
+</body>
+</html>
