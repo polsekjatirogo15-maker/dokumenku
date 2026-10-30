@@ -25,9 +25,9 @@ const CONFIGURED_ROOT_FOLDER_ID = '1AMURiORmpzbNt8MFev2Nkuj6LHiy5xRO';
 const PROP_SHEET_ID = 'FOTOKU_SHEET_ID';
 
 function doGet() {
-  return HtmlService.createHtmlOutputFromFile('index')
-    .setTitle(APP_NAME + ' — Manajemen Dokumentasi')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+  // Cek kesehatan backend (frontend ada di Vercel, jadi tidak ada file HTML di project ini).
+  return ContentService.createTextOutput(JSON.stringify({ ok: true, app: APP_NAME, backend: 'aktif', configured: getAppInfo().configured }))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 
